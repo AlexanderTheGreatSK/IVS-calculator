@@ -1,27 +1,25 @@
 package com.company;
 
-import com.company.CalcLib;
-
 import org.junit.jupiter.api.*;
-
-import java.security.InvalidParameterException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 /*
 No operation
-Remove floating zeros
-White characters impact
-Floating point as , and .
-Illegal number
+-Remove floating zeros
+-White characters impact
+-Floating point as , and .
+-Illegal number
     Two floating points
-Illegal characters
+-Illegal characters
     ; : ' "...
-Periodic result
+-Periodic result
+-Illegal operations
+    1.2!, root(2, -1)...
 
-Basic single: +, -, /, *
+-Basic single: +, -, /, *
 Basic single edges
-Advanced single: fact, pow, sqrt, mod
+-Advanced single: fact, pow, sqrt, mod
 Advanced single edges
 
 Overflow single?
@@ -29,6 +27,7 @@ Operator precedence
 
 More complex calculations
  */
+
 public class Tests {
 
     @Nested
@@ -36,21 +35,28 @@ public class Tests {
     class NoOp {
 
         @Test
+        @DisplayName("Empty string")
+        void EmptyString() {
+            assertEquals("", CalcLib.main(""));
+        }
+
+        @Test
         @DisplayName("Just a single number")
         void SingleNumber() {
-            assertEquals("123456789.123456789", CalcLib.main("123456789.123456789"));
+            assertEquals("123456789", CalcLib.main("123456789"));
         }
 
         @Test
         @DisplayName("9 floating digits")
         void LongFloat() {
-            assertEquals("123456789.123456789", CalcLib.main("123456789.123456789"));
+            assertEquals("123456789.12345678", CalcLib.main("123456789.123456789"));
         }
 
         @Test
         @DisplayName("Remove the floating zeros")
         void FloatingZeros() {
             assertEquals("123456789.1234", CalcLib.main("123456789.12340000"));
+            assertEquals("1", CalcLib.main("0.1 + 0.9"));
         }
     }
 
@@ -59,6 +65,7 @@ public class Tests {
     void FloatingSymbol() {
         assertEquals("0.1", CalcLib.main("0.1"));
         assertEquals("0.1", CalcLib.main("0,1"));
+        assertEquals("0.2", CalcLib.main("0,1 + 0.1"));
     }
 
     @Nested
@@ -151,7 +158,7 @@ public class Tests {
             }
 
             @Test
-            @DisplayName("Division, periodic result in 16 floating digits")
+            @DisplayName("Division, periodic result in 8 floating digits")
             void DivPeriodic() {
                 assertEquals("0.33333333", CalcLib.main("1 / 3"));
                 assertEquals("0.66666667", CalcLib.main("2 / 3"));
@@ -167,9 +174,6 @@ public class Tests {
         @DisplayName("Factorial")
         void Fact() {
             assertEquals("362880", CalcLib.main("9!"));
-        /* TODO
-            assertThrows(CalcLib.main("2.5!"));
-         */
         }
 
         @Test
@@ -227,16 +231,10 @@ public class Tests {
         @DisplayName("Modulo with a natural number")
         void modN() {
             assertEquals("2", CalcLib.main("123456 % 17"));
+            assertEquals("2", CalcLib.main("123456 mod 17"));
         }
-
-        /* TODO
-        @Test
-        @DisplayName("Modulo with a real number")
-        void modR() {
-            assertThrows("2", CalcLib.main("123456 % 17"));
-        }
-         */
     }
+
     @Nested
     @DisplayName("White characters influence")
     class WhiteChars {
@@ -288,8 +286,114 @@ public class Tests {
             void SpaceInMod() {
                 assertEquals("2", CalcLib.main(" 123456%17 "));
                 assertEquals("2", CalcLib.main(" 123456 % 17 "));
+                assertEquals("2", CalcLib.main(" 123456mod17 "));
+                assertEquals("2", CalcLib.main(" 123456 mod 17 "));
             }
         }
     }
 
+    @Nested
+    @DisplayName("Illegal input")
+    class IllegalInput {
+        @Test
+        @DisplayName("Illegal input format")
+        void IllegalFormat() {
+            assertThrows(ArithmeticException.class, () -> CalcLib.main("1 + !1"));
+            assertThrows(ArithmeticException.class, () -> CalcLib.main("1 + sqrt(4, 2"));
+            assertThrows(ArithmeticException.class, () -> CalcLib.main("1 + sqrt 4, 2)"));
+            assertThrows(ArithmeticException.class, () -> CalcLib.main("sqrt(4, 2 + 2"));
+            assertThrows(ArithmeticException.class, () -> CalcLib.main("1 + ,1"));
+            assertThrows(ArithmeticException.class, () -> CalcLib.main("1 + .1"));
+            assertThrows(ArithmeticException.class, () -> CalcLib.main("1 +"));
+            assertThrows(ArithmeticException.class, () -> CalcLib.main("1 *"));
+            assertThrows(ArithmeticException.class, () -> CalcLib.main("root()"));
+            assertThrows(ArithmeticException.class, () -> CalcLib.main("root(2, )"));
+            assertThrows(ArithmeticException.class, () -> CalcLib.main("root(2 2)"));
+            assertThrows(ArithmeticException.class, () -> CalcLib.main("pow()"));
+        }
+
+        @Test
+        @DisplayName("Illegal characters")
+        void IllegalChars() {
+            assertThrows(ArithmeticException.class, () -> CalcLib.main("1 + {1"));
+            assertThrows(ArithmeticException.class, () -> CalcLib.main("1 + 1}"));
+            assertThrows(ArithmeticException.class, () -> CalcLib.main("1 + ;1"));
+            assertThrows(ArithmeticException.class, () -> CalcLib.main("1 + &1"));
+            assertThrows(ArithmeticException.class, () -> CalcLib.main("1 + $1"));
+            assertThrows(ArithmeticException.class, () -> CalcLib.main("1 + #1"));
+            assertThrows(ArithmeticException.class, () -> CalcLib.main("1 + @1"));
+            assertThrows(ArithmeticException.class, () -> CalcLib.main("1 + [1"));
+            assertThrows(ArithmeticException.class, () -> CalcLib.main("1 + ]1"));
+            assertThrows(ArithmeticException.class, () -> CalcLib.main("1 + /1"));
+            assertThrows(ArithmeticException.class, () -> CalcLib.main("1 + \\1"));
+            assertThrows(ArithmeticException.class, () -> CalcLib.main("1 + '1"));
+            assertThrows(ArithmeticException.class, () -> CalcLib.main("1 + \"1"));
+            assertThrows(ArithmeticException.class, () -> CalcLib.main("1 + :1"));
+            assertThrows(ArithmeticException.class, () -> CalcLib.main("1 + >1"));
+            assertThrows(ArithmeticException.class, () -> CalcLib.main("1 + <1"));
+            assertThrows(ArithmeticException.class, () -> CalcLib.main("1 + ,1"));
+            assertThrows(ArithmeticException.class, () -> CalcLib.main("1 + |1"));
+            assertThrows(ArithmeticException.class, () -> CalcLib.main("1 + _1"));
+            assertThrows(ArithmeticException.class, () -> CalcLib.main("1 + ~1"));
+            assertThrows(ArithmeticException.class, () -> CalcLib.main("1 + `1"));
+            assertThrows(ArithmeticException.class, () -> CalcLib.main("1 + a1"));
+            assertThrows(ArithmeticException.class, () -> CalcLib.main("1 + A1"));
+            assertThrows(ArithmeticException.class, () -> CalcLib.main("1 + z1"));
+            assertThrows(ArithmeticException.class, () -> CalcLib.main("1 + Z1"));
+        }
+
+        @Test
+        @DisplayName("Illegal numbers")
+        void IllegalNums() {
+            assertThrows(ArithmeticException.class, () -> CalcLib.main("1.01.02"));
+            assertThrows(ArithmeticException.class, () -> CalcLib.main("1.01,02"));
+            assertThrows(ArithmeticException.class, () -> CalcLib.main("1,01,02"));
+            assertThrows(ArithmeticException.class, () -> CalcLib.main("1,01.02"));
+            assertThrows(ArithmeticException.class, () -> CalcLib.main("1,.02"));
+            assertThrows(ArithmeticException.class, () -> CalcLib.main("1..02"));
+            assertThrows(ArithmeticException.class, () -> CalcLib.main("1.,02"));
+        }
+
+        @Test
+        @DisplayName("Illegal operation/operand")
+        void IllegalOp() {
+            assertThrows(ArithmeticException.class, () -> CalcLib.main("root(2, 0)"));
+            assertThrows(ArithmeticException.class, () -> CalcLib.main("root(2, -1)"));
+            assertThrows(ArithmeticException.class, () -> CalcLib.main("root(2, 1.2)"));
+            assertThrows(ArithmeticException.class, () -> CalcLib.main("pow(2, 1.2)"));
+            assertThrows(ArithmeticException.class, () -> CalcLib.main("pow(2, -1)"));
+
+            assertThrows(ArithmeticException.class, () -> CalcLib.main("1.1 mod 1.1"));
+            assertThrows(ArithmeticException.class, () -> CalcLib.main("1.1 % 1.1"));
+            assertThrows(ArithmeticException.class, () -> CalcLib.main("1.1 mod 1"));
+            assertThrows(ArithmeticException.class, () -> CalcLib.main("1.1 % 1"));
+            assertThrows(ArithmeticException.class, () -> CalcLib.main("1 mod 1.1"));
+            assertThrows(ArithmeticException.class, () -> CalcLib.main("1 % 1.1"));
+
+            assertThrows(ArithmeticException.class, () -> CalcLib.main("2.5!"));
+        }
+    }
+
+    @Test
+    @DisplayName("Operation precedence")
+    void OpPrec() {
+        assertEquals("2", CalcLib.main("1 + 1 * 2 - 1"));
+        assertEquals("5", CalcLib.main("1 + 10 / 2 - 1"));
+        assertEquals("123", CalcLib.main("123 + 1 % 2 - 1"));
+        assertEquals("123", CalcLib.main("123 + 1 mod 2 - 1"));
+        assertEquals("150", CalcLib.main("100 + 5 * root(100, 2)"));
+        assertEquals("300", CalcLib.main("100 + 2 * pow(10, 2)"));
+        assertEquals("112", CalcLib.main("100 + 2 * 3!"));
+    }
+
+    @Test
+    @DisplayName("More complex calculations")
+    void ComplexCalculations() {
+        assertEquals("366782,2506", CalcLib.main("1234 * root(10, 2) + 17mod2 * 9!"));
+        assertEquals("-3627200", CalcLib.main("pow(4, 2) * root(10000, 2) - 10! * 120%17"));
+        assertEquals("-359", CalcLib.main("100*100/250+100-50*10+1"));
+        assertEquals("18101.93359837", CalcLib.main("100%21*400/root(2,2)*pow(2,2)"));
+        assertEquals("0", CalcLib.main("pow(2, 2) -2*5 + 6"));
+        assertEquals("-32749.25531915", CalcLib.main("root(123456, 4) - pow(2, 15)"));
+    }
 }
