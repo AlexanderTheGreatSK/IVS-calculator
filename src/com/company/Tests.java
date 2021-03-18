@@ -1,32 +1,7 @@
 package com.company;
 
 import org.junit.jupiter.api.*;
-
 import static org.junit.jupiter.api.Assertions.*;
-
-/*
-No operation
--Remove floating zeros
--White characters impact
--Floating point as , and .
--Illegal number
-    Two floating points
--Illegal characters
-    ; : ' "...
--Periodic result
--Illegal operations
-    1.2!, root(2, -1)...
-
--Basic single: +, -, /, *
-Basic single edges
--Advanced single: fact, pow, sqrt, mod
-Advanced single edges
-
-Overflow single?
--Operator precedence
-
--More complex calculations
- */
 
 public class Tests {
 
@@ -347,6 +322,20 @@ public class Tests {
     @Nested
     @DisplayName("Illegal input")
     class IllegalInput {
+
+        @Test
+        @DisplayName("Too huge numbers")
+        void HugeNums() {
+            assertThrows(ArithmeticException.class,
+                    () -> CalcLib.main("12345678901234567890123456789012345678901234567890 + 1"));
+            assertThrows(ArithmeticException.class,
+                    () -> CalcLib.main("9876543210 * 9876543210 * 9876543210"));
+            assertThrows(ArithmeticException.class,
+                    () -> CalcLib.main("12345678901234567890123456789012345678901234567890.1 + 0.9"));
+            assertThrows(ArithmeticException.class,
+                    () -> CalcLib.main("9876543210.1 * 9876543210.1 * 9876543210.1"));
+        }
+
         @Test
         @DisplayName("Illegal input format")
         void IllegalFormat() {
@@ -480,6 +469,13 @@ public class Tests {
             assertThrows(ArithmeticException.class,
                     () -> CalcLib.main("2.5!"));
         }
+
+        @Test
+        @DisplayName("Empty input")
+        void EmptyInput() {
+            assertThrows(ArithmeticException.class,
+                    () -> CalcLib.main(""));
+        }
     }
 
     @Test
@@ -551,6 +547,14 @@ public class Tests {
                     CalcLib.main("root(50+50, 2)"));
             assertEquals("10",
                     CalcLib.main("root(50*2, 2)"));
+        }
+
+        @Disabled
+        @Test
+        @DisplayName("Missing a pair parenthese")
+        void NoPairPar() {
+            assertThrows(ArithmeticException.class,
+                    () -> CalcLib.main("1 + (1 + (1 + 1)"));
         }
     }
 
