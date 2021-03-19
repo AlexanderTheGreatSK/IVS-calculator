@@ -1,8 +1,8 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="Unit tests" type="JUnit" factoryName="JUnit">
     <module name="IVS-calculator" />
-    <option name="PACKAGE_NAME" value="com.company" />
-    <option name="MAIN_CLASS_NAME" value="com.company.Tests" />
+    <option name="PACKAGE_NAME" value="tests" />
+    <option name="MAIN_CLASS_NAME" value="tests.Tests" />
     <option name="METHOD_NAME" value="" />
     <option name="TEST_OBJECT" value="class" />
     <method v="2">

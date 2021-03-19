@@ -1,7 +1,10 @@
-package com.company;
+package tests;
+
+import com.company.*;
 
 import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;
+
 
 public class Tests {
 
@@ -551,7 +554,7 @@ public class Tests {
 
         @Disabled
         @Test
-        @DisplayName("Missing a pair parenthese")
+        @DisplayName("Uneven number of parentheses")
         void NoPairPar() {
             assertThrows(ArithmeticException.class,
                     () -> CalcLib.main("1 + (1 + (1 + 1)"));
