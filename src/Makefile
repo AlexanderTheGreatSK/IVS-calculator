@@ -1,4 +1,4 @@
-BUILDDIR = build
+BUILDDIR = ../build
 ZIPNAME = xkovac59_xokruc00_xskalo01_xfrybo01.zip
 CLEANLIST = ../build ../out
 

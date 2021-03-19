@@ -1,0 +1,72 @@
+STUDENTS WORKING ON THE PROJECT
+Patrik Skaloš (xskalo01), 
+Jana Kováčiková (xkovac59), 
+Alexander Okrucký (xokruc00), 
+Jiřina Frýbortová (xfrybo01)
+
+
+REPOSITORY
+URL: https://github.com/AlexanderTheGreatSK/IVS-calculator
+(The repository was shared with ivs.kontrola@gmail.com)
+
+
+DECISIONS
+#Project
+The elective calculator function - modulo
+On screen keyboard - yes
+Memory of recent calculations (or at least one) - yes
+Operating system(s) for the app to work on: Linux
+
+#Management
+Task board - Trello
+Git: Github - yes
+Git: Github issues usage? - no
+Meeting notes? where to share? - yes, google drive
+Other files: where to share? - google drive
+
+#Code
+Programming language - java
+Code and commentaries language - en
+Documentation language - en
+Maximum characters per line - 80
+Indent - 4 spaces
+Usage of {} even for one-liners (if, for,...) - yes
+Usage of { belonging to function on a separate line? - no
+Documentation - javadoc
+Editor configuration usage - no
+
+#Team
+Communication channel - Discord
+Penalty for missing a deadline - no
+Penalty for skipping a meeting - no
+Meeting frequency - Friday to Sunday, 1 or 2 meetings a week
+Fixed time of meetings - 14:00 (2 pm) if possible
+Message reply time limit - no
+Reading all unread messages necessity - yes
+Sharing a phone number - yes
+
+
+TASK DISTRIBUTION AND THEIR DEADLINES (Task - person responsible - deadline)
+-Management                                                          - xkovac59
+-Collaudator (watching over colleagues’ work)                        - xokruc00
+-Meeting note taking                                                 - xskalo01
+
+-GUI design (just a markup of how the app could look like)           - xkovac59           - 21.03.2021
+-GUI code                                                            - xokruc00           - 28.03.2021
+-Calculator library code                                             - xfrybo01, xskalo01 - 04.04.2021
+-Main code (connecting the calc and GUI)                             - xfrybo01           - 07.04.2021
+-Makefile                                                            - xskalo01           - 21.03.2021
+
+-Installer (and uninstaller)                                         - xokruc00           - 18.04.2021
+-Library tests (unit tests of the calculator library)                - xskalo01           - 21.03.2021
+-App testing (testing the calculator as a finished program)          - xkovac59           - 11.04.2021
+-Acceptance testing (installation, reading the manual,...)           - everyone           - 25.04.2021
+-Profiling (profile-guided optimization if there’s time)             - xskalo01           - 11.04.2021
+
+-Documentation, (un)install instructions,...                         - xkovac59           - 25.04.2021
+  (not doxyfile, which we all have to create separately)
+-Readme (repository README.md)                                       - xkovac59           - not needed
+-Help (how to use the app within the app)                            - xfrybo01           - 21.03.2021
+-User guide (more detailed guide with installation manual and so on) - xkovac59           - 18.04.2021
+
+-Mockup                                                              - everyone           - 25.04.2021
