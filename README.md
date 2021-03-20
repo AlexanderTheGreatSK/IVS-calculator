@@ -1,5 +1,6 @@
 # IVS Project 2 - UNI(x)calc
 
+tu bude orázok našej kalkulačky :)
 
 # Enviroment
 Ubuntu 64bit
