@@ -5,10 +5,10 @@
 Ubuntu 64bit
 
 # Authors
-- Jiřina Frýbortová     (xfrybo01)
+- Jiřina Frýbortová   (xfrybo01)
 - Jana Kováčiková     (xkovac59)
-- Alexander Okrucký     (xokruc00)
-- Patrik Skaloš         (xskalo01)
+- Alexander Okrucký   (xokruc00)
+- Patrik Skaloš       (xskalo01)
 
 # Licence
 
