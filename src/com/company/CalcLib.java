@@ -94,8 +94,8 @@ public class CalcLib {
         list.remove(list.getHead());
         testPrint(list);
     }
-    public static String main(String input) {
 
+    public static String main(String input) {
         test(input);
         return input;
     }
