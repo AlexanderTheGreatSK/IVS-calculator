@@ -71,7 +71,11 @@ public class CalcLib {
     private static void testPrint(DoublyLinkedList list) {
         DoublyLinkedList.Node tmp = list.head;
         while(tmp != null) {
-            System.out.println(tmp.op);
+            if(tmp.op != '\0') {
+                System.out.println(tmp.op);
+            } else {
+                System.out.println(tmp.num);
+            }
             tmp = tmp.next;
         }
     }
@@ -97,17 +101,16 @@ public class CalcLib {
         list.remove(list.getHead());
         testPrint(list);
     }
-     //*/
+     */
 
     public static DoublyLinkedList parser(String input) {
         DoublyLinkedList list = new DoublyLinkedList();
 
-        input = "neco 5 +d 4 6d+5 pow(2.45, 5.4564) neco dalsi";
         //Removes all whitespaces and non-visible characters
         input = input.replaceAll("\\s+","");
 
         //Replace all "mod" with '%'
-
+        input = input.replace("mod", "%");
 
         //Convert "pow" and "root" to ^ and |
         int indexFrom = input.indexOf("pow");
@@ -115,50 +118,37 @@ public class CalcLib {
             int indexTo = input.indexOf(")", indexFrom);
             String orig = input.substring(indexFrom, indexTo + 1);
             String tmp = orig;
-            tmp = tmp.replace("pow(", ""); // rozdělit na 2 až to nebude fungovat
+            tmp = tmp.replace("pow(", "");
             tmp = tmp.replace(")", "");
             tmp = tmp.replace(",", "^");
             input = input.replace(orig, tmp);
             indexFrom = input.indexOf("pow");
         }
-
         indexFrom = input.indexOf("root");
         while(indexFrom != -1){
             int indexTo = input.indexOf(")", indexFrom);
             String orig = input.substring(indexFrom, indexTo + 1);
             String tmp = orig;
-            tmp = tmp.replace("root(", ""); // rozdělit na 2 až to nebude fungovat
+            tmp = tmp.replace("root(", "");
             tmp = tmp.replace(")", "");
             tmp = tmp.replace(",", "|");
             input = input.replace(orig, tmp);
             indexFrom = input.indexOf("root");
         }
 
-        input.replaceAll(",", ".");
+        // Replace all commas with dots
+        input = input.replaceAll(",", ".");
+
+
         char[] operators = {'+', '-', '*', '/', '!', '%', '^', '|'};
-        /*
-            ^ |
-            !
-            %
-            * /
-            + -
-
-        1532412+ pow(3, 2) * 8!
-
-        1532412
-        +
-        3
-        ^
-        2
-        *
-        8
-        !
-        */
+        boolean isOperator;
         String temp = "";
-        char c = '0';
         int len = input.length();
+        char c = '0';
+
         for(int i = 0; i < len; i++){
             c = input.charAt(i);
+            isOperator = false;
             if((c >= '0' && c <= '9') || c == '.'){
                 temp = temp + c;
                 continue;
@@ -166,14 +156,29 @@ public class CalcLib {
                 list.append('\0', Double.parseDouble(temp));
                 temp = "";
             }
-
+            for(int j = 0; j < 8; j++){
+                if(c == operators[j]){
+                    list.append(c, 0);
+                    isOperator = true;
+                    break;
+                }
+            }
+            if(!isOperator){
+                return null;
+            }
         }
-
+        if(!temp.isEmpty()) {
+            list.append('\0', Double.parseDouble(temp));
+        }
         return list;
     }
 
     public static String main(String input) {
         DoublyLinkedList list = parser(input);
+        if(list == null){
+            return "BAD";
+        }
+        testPrint(list);
         return input;
     }
 }
