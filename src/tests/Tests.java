@@ -29,7 +29,7 @@ public class Tests {
         @Test
         @DisplayName("9 floating digits")
         void LongFloat() {
-            assertEquals("123456789.12345678",
+            assertEquals("123456789.12345679",
                     CalcLib.main("123456789.123456789"));
         }
 
@@ -91,7 +91,7 @@ public class Tests {
             @Test
             @DisplayName("Subtraction of real numbers")
             void SubR() {
-                assertEquals("123456788,87654322",
+                assertEquals("123456788.87654322",
                         CalcLib.main("123456789.0 - 0.12345678"));
             }
         }
@@ -117,8 +117,8 @@ public class Tests {
             @Test
             @DisplayName("Multiplication of real numbers, real result")
             void MulRR() {
-                assertEquals("2.5 * 2222.11111111",
-                        CalcLib.main("2.5 * 2222.11111111"));
+                assertEquals("5555.27777778",
+                        CalcLib.main("2.5 * 2222.111111111"));
             }
         }
 
@@ -143,7 +143,7 @@ public class Tests {
             @Test
             @DisplayName("Division of real numbers, natural result")
             void DivRN() {
-                assertEquals("6172839",
+                assertEquals("493827158",
                         CalcLib.main("123456789.5 / 0.25"));
             }
 
@@ -195,7 +195,7 @@ public class Tests {
         }
 
         @Test
-        @DisplayName("Power (4) of a real number")
+        @DisplayName("Power (32) of a real number")
         void PowTo4R() {
             assertEquals("4294967296",
                     CalcLib.main("pow(2, 32)"));
@@ -213,7 +213,7 @@ public class Tests {
         @Test
         @DisplayName("Square root with a real number")
         void sqrtR() {
-            assertEquals("1,73205080",
+            assertEquals("1.73205081",
                     CalcLib.main("root(3, 2)"));
         }
 
@@ -235,7 +235,7 @@ public class Tests {
         @DisplayName("Bigger root with a natural number")
         void root() {
             assertEquals("2",
-                    CalcLib.main("root(255, 7)"));
+                    CalcLib.main("root(128, 7)"));
         }
 
         @Test
@@ -503,13 +503,13 @@ public class Tests {
     @Test
     @DisplayName("More complex calculations")
     void ComplexCalculations() {
-        assertEquals("366782,2506",
+        assertEquals("366782.25063265",
                 CalcLib.main("1234 * root(10, 2) + 17mod2 * 9!"));
         assertEquals("-3627200",
                 CalcLib.main("pow(4, 2) * root(10000, 2) - 10! * 120%17"));
         assertEquals("-359",
                 CalcLib.main("100*100/250+100-50*10+1"));
-        assertEquals("18101.93359837",
+        assertEquals("18101.93359838",
                 CalcLib.main("100%21*400/root(2,2)*pow(2,2)"));
         assertEquals("0",
                 CalcLib.main("pow(2, 2) - 2*5 + 6"));

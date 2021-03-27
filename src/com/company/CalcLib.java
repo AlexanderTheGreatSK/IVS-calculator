@@ -1,6 +1,11 @@
 package com.company;
 
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+
 public class CalcLib {
+
+    private static final int floatingPointDigits = 8;
 
     public static class DoublyLinkedList {
 
@@ -28,14 +33,36 @@ public class CalcLib {
         }
 
         Node getTail() {
-            Node tmp = getHead();
-            if(tmp == null) {
+            Node node = getHead();
+            if(node == null) {
                 return null;
             }
-            while(tmp.next != null){
-                tmp = tmp.next;
+            while(node.next != null) {
+                node = node.next;
             }
-            return tmp;
+            return node;
+        }
+
+        Node getNodeByOperator(char op) {
+            Node node = head;
+            while(node != null) {
+                if(node.operator == op) {
+                    return node;
+                }
+                node = node.next;
+            }
+            return null;
+        }
+
+        Node getNodeByNumber(double num){
+            Node node = head;
+            while(node != null) {
+                if(node.number == num) {
+                    return node;
+                }
+                node = node.next;
+            }
+            return null;
         }
 
         boolean append(char op, double num) {
@@ -58,7 +85,7 @@ public class CalcLib {
             if(toRemove == null || getHead() == null) {
                 return false;
             }
-            if(head == toRemove){
+            if(head == toRemove) {
                 head = head.next;
             }
             if(toRemove.next != null) {
@@ -180,13 +207,132 @@ public class CalcLib {
         return list;
     }
 
+    public static String validate(DoublyLinkedList list){
+        // invalid factorial input
+        // modulo natural number
+        // division by zero
+        // no operator
+
+        return "valid";
+    }
+
+    public static void writeTwoOperandOperation(char operator,
+            double num, DoublyLinkedList list) {
+        list.getNodeByOperator(operator).prev.number = num;
+        list.remove(list.getNodeByOperator(operator).next);
+        list.remove(list.getNodeByOperator(operator));
+    }
+
+    public static void calculate(DoublyLinkedList list){
+        double result;
+
+        // calculate fact
+        while(list.getNodeByOperator('!') != null) {
+            result = list.getNodeByOperator('!').prev.number;
+            for(int i = (int)result - 1; i > 0; i--) {
+                result *= i;
+            }
+            list.getNodeByOperator('!').prev.number = result;
+            list.remove(list.getNodeByOperator('!'));
+        }
+
+        // calculate power
+        while(list.getNodeByOperator('^') != null) {
+            result = Math.pow(list.getNodeByOperator('^').prev.number,
+                    list.getNodeByOperator('^').next.number);
+            writeTwoOperandOperation('^', result, list);
+        }
+
+        // calculate root
+        while(list.getNodeByOperator('|') != null) {
+            result = Math.pow(list.getNodeByOperator('|').prev.number,
+                    1.0f/list.getNodeByOperator('|').next.number);
+            writeTwoOperandOperation('|', result, list);
+        }
+
+        // Calculate modulo
+        while(list.getNodeByOperator('%') != null) {
+            result = list.getNodeByOperator('%').prev.number %
+                    list.getNodeByOperator('%').next.number;
+            writeTwoOperandOperation('%', result, list);
+        }
+
+        // Convert division to multiplication
+        while(list.getNodeByOperator('/') != null) {
+            list.getNodeByOperator('/').next.number =
+                    1 / list.getNodeByOperator('/').next.number;
+            list.getNodeByOperator('/').operator = '*';
+        }
+
+        // Calculate multiplication
+        while(list.getNodeByOperator('*') != null) {
+            result = list.getNodeByOperator('*').prev.number *
+                    list.getNodeByOperator('*').next.number;
+            writeTwoOperandOperation('*', result, list);
+        }
+
+        // Convert minus sings to plus signs (negating the next operand)
+        while(list.getNodeByOperator('-') != null) {
+            list.getNodeByOperator('-').next.number =
+                    - list.getNodeByOperator('-').next.number;
+            list.getNodeByOperator('-').operator = '+';
+        }
+
+        // Calculate plus
+        while(list.getNodeByOperator('+') != null) {
+            result = list.getNodeByOperator('+').prev.number +
+                    list.getNodeByOperator('+').next.number;
+            writeTwoOperandOperation('+', result, list);
+        }
+    }
+
+    public static String rmFloatingPointIfInt(String input){
+        double doubleNum = Double.parseDouble(input);
+        long longNum = (long)doubleNum;
+        if(doubleNum - longNum != 0) {
+            return input;
+        }
+        return Long.toString(longNum);
+    }
+
+
     public static String main(String input) {
+
+        // If the string is empty
+        if(input.equals("")){
+            return "";
+        }
+
+        // Parse the input string into a doubly linked list
         DoublyLinkedList list = parser(input);
+
+        // Check if the input string was successfully parsed
         if(list == null){
             return "BAD";
         }
-        testPrint(list);
-        return input;
+
+        // Check if the input string is valid
+        String validation = validate(list);
+        if(!validation.equals("valid")) {
+            return validation;
+        }
+
+        // Calculate the result using the doubly linked list
+        calculate(list);
+        if(list.getHead().next != null) {
+            return "ERROR - could not compute";
+        }
+        double result = list.getHead().number;
+
+        // If the result is a natural number, return it as an integer
+        if(result == Math.floor(result)) {
+            long newRes = Math.round(result);
+            return Long.toString(newRes);
+        }
+
+        // Truncate the result to 8 decimal places and return
+        String pattern = "#.########";
+        DecimalFormat df = new DecimalFormat(pattern);
+        return df.format(result);
     }
 }
-
