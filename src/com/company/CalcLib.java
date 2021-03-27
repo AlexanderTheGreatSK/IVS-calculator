@@ -4,15 +4,20 @@ public class CalcLib {
 
     public static class DoublyLinkedList {
 
+        /*
+         * The Node class represents either an operator or a number
+         * if a Node is an operator, number = 0.0
+         * if a Node is a number, operator = '\0'
+         */
         static class Node {
-            char op;
-            Double num;
+            char operator;
+            Double number;
             Node prev;
             Node next;
 
             Node(char inputChar, double inputNum) {
-                op = inputChar;
-                num = inputNum;
+                operator = inputChar;
+                number = inputNum;
             }
         }
 
@@ -71,14 +76,15 @@ public class CalcLib {
     private static void testPrint(DoublyLinkedList list) {
         DoublyLinkedList.Node tmp = list.head;
         while(tmp != null) {
-            if(tmp.op != '\0') {
-                System.out.println(tmp.op);
+            if(tmp.operator != '\0') {
+                System.out.println(tmp.operator);
             } else {
-                System.out.println(tmp.num);
+                System.out.println(tmp.number);
             }
             tmp = tmp.next;
         }
     }
+    
     /*
     private static void test(String input){
         DoublyLinkedList list = new DoublyLinkedList();
@@ -105,30 +111,41 @@ public class CalcLib {
 
     public static DoublyLinkedList parser(String input) {
         DoublyLinkedList list = new DoublyLinkedList();
+        char[] operators = {'+', '-', '*', '/', '!', '%', '^', '|'};
 
-        //Removes all whitespaces and non-visible characters
+        // Removes all whitespaces and non-visible characters
         input = input.replaceAll("\\s+","");
 
-        //Replace all "mod" with '%'
+        // Replace all "mod" with '%'
         input = input.replace("mod", "%");
 
-        //Convert "pow" and "root" to ^ and |
-        int indexFrom = input.indexOf("pow");
-        while(indexFrom != -1){
+        // Convert "pow()" to '^', for example pow(5,2) => 5^2
+        String orig;
+        String tmp;
+        int indexFrom;
+        while(true){
+            indexFrom = input.indexOf("pow");
+            if(indexFrom == -1){
+                break;
+            }
             int indexTo = input.indexOf(")", indexFrom);
-            String orig = input.substring(indexFrom, indexTo + 1);
-            String tmp = orig;
+            orig = input.substring(indexFrom, indexTo + 1);
+            tmp = orig;
             tmp = tmp.replace("pow(", "");
             tmp = tmp.replace(")", "");
             tmp = tmp.replace(",", "^");
             input = input.replace(orig, tmp);
-            indexFrom = input.indexOf("pow");
         }
-        indexFrom = input.indexOf("root");
-        while(indexFrom != -1){
+
+        // Converts "root" to '|', for example root(5,2) => 5|2 (represents sqrt(5))
+        while(true){
+            indexFrom = input.indexOf("root");
+            if(indexFrom == -1){
+                break;
+            }
             int indexTo = input.indexOf(")", indexFrom);
-            String orig = input.substring(indexFrom, indexTo + 1);
-            String tmp = orig;
+            orig = input.substring(indexFrom, indexTo + 1);
+            tmp = orig;
             tmp = tmp.replace("root(", "");
             tmp = tmp.replace(")", "");
             tmp = tmp.replace(",", "|");
@@ -139,13 +156,11 @@ public class CalcLib {
         // Replace all commas with dots
         input = input.replaceAll(",", ".");
 
-
-        char[] operators = {'+', '-', '*', '/', '!', '%', '^', '|'};
+        // Fill list with operators and values
         boolean isOperator;
         String temp = "";
         int len = input.length();
         char c = '0';
-
         for(int i = 0; i < len; i++){
             c = input.charAt(i);
             isOperator = false;
