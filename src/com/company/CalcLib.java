@@ -111,7 +111,7 @@ public class CalcLib {
 
     public static DoublyLinkedList parser(String input) {
         DoublyLinkedList list = new DoublyLinkedList();
-        char[] operators = {'+', '-', '*', '/', '!', '%', '^', '|'};
+        String operatorsList = "+-*/!%^|";
 
         // Removes all whitespaces and non-visible characters
         input = input.replaceAll("\\s+","");
@@ -136,7 +136,7 @@ public class CalcLib {
             tmp = tmp.replace(",", "^");
             input = input.replace(orig, tmp);
         }
-
+        
         // Converts "root" to '|', for example root(5,2) => 5|2 (represents sqrt(5))
         while(true){
             indexFrom = input.indexOf("root");
@@ -156,31 +156,23 @@ public class CalcLib {
         // Replace all commas with dots
         input = input.replaceAll(",", ".");
 
-        // Fill list with operators and values
-        boolean isOperator;
+        // Fill list with operators and numbers
         String temp = "";
         int len = input.length();
-        char c = '0';
+        char ch = '0';
         for(int i = 0; i < len; i++){
-            c = input.charAt(i);
-            isOperator = false;
-            if((c >= '0' && c <= '9') || c == '.'){
-                temp = temp + c;
+            ch = input.charAt(i);
+            if((ch >= '0' && ch <= '9') || ch == '.'){
+                temp = temp + ch;
                 continue;
             }else if(!temp.isEmpty()){
                 list.append('\0', Double.parseDouble(temp));
                 temp = "";
             }
-            for(int j = 0; j < 8; j++){
-                if(c == operators[j]){
-                    list.append(c, 0);
-                    isOperator = true;
-                    break;
-                }
-            }
-            if(!isOperator){
+            if(operatorsList.indexOf(ch) == -1){
                 return null;
             }
+            list.append(ch, 0);
         }
         if(!temp.isEmpty()) {
             list.append('\0', Double.parseDouble(temp));
