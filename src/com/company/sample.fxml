@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 
 
-<BorderPane fx:controller="IVS.Controller" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="417.0" prefWidth="286.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane fx:controller="com.company.Controller" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="417.0" prefWidth="286.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <center>
       <Separator prefHeight="28.0" prefWidth="278.0" BorderPane.alignment="CENTER" />
    </center>
@@ -33,7 +33,7 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Button mnemonicParsing="false" prefHeight="60.0" prefWidth="116.0" text="2√" GridPane.columnIndex="1" onAction="#buttonPress"/>
+            <Button mnemonicParsing="false" prefHeight="60.0" prefWidth="116.0" text="2√" GridPane.columnIndex="1"/>
             <Button mnemonicParsing="false" prefHeight="69.0" prefWidth="115.0" text="(" GridPane.columnIndex="2" />
             <Button mnemonicParsing="false" prefHeight="58.0" prefWidth="107.0" text=")" GridPane.columnIndex="3" />
             <Button mnemonicParsing="false" prefHeight="86.0" prefWidth="96.0" text="AC" GridPane.rowIndex="1" />
