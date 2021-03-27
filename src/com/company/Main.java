@@ -18,7 +18,7 @@ public class Main  extends Application {
         primaryStage.setMinHeight(445);
         primaryStage.setMinWidth(286);
 
-        //primaryStage.getIcons().add(new Image(Main.class.getResourceAsStream("logo.png")));
+        primaryStage.getIcons().add(new Image(Main.class.getResourceAsStream("logo.png")));
 
         primaryStage.setScene(new Scene(root, 286, 417));
         primaryStage.show();
