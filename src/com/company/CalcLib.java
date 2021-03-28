@@ -5,16 +5,14 @@ import java.text.DecimalFormat;
 
 public class CalcLib {
 
-    private static final int floatingPointDigits = 8;
-
     public static class DoublyLinkedList {
 
         /*
-         * The Node class represents either an operator or a number
-         * if a Node is an operator, number = 0.0
-         * if a Node is a number, operator = '\0'
+         * The Node class represents either an operator or a number.
+         * If a Node is an operator, number = 0.0,
+         * if a Node is a number, operator = '\0'.
          */
-        static class Node {
+        private static class Node {
             char operator;
             Double number;
             Node prev;
@@ -27,79 +25,169 @@ public class CalcLib {
         }
 
         Node head;
+        Node currentOperatorNode;
 
-        Node getHead() {
-            return head;
-        }
-
-        Node getTail() {
-            Node node = getHead();
-            if(node == null) {
+        /*
+         * Finds and returns the tail (last node).
+         */
+        private Node getTail() {
+            Node node = head;
+            if (node == null) {
                 return null;
             }
-            while(node.next != null) {
+            while (node.next != null) {
                 node = node.next;
             }
             return node;
         }
 
-        Node getNodeByOperator(char op) {
+        /*
+         * Finds the first node (from head to tail) representing the given operator
+         * and saves it into currentOperatorNode.
+         * Returns true if given operator was found, or false if given operator was not present in the list.
+         */
+        public boolean findOperator(char op) {
             Node node = head;
-            while(node != null) {
-                if(node.operator == op) {
-                    return node;
+            while (node != null) {
+                if (node.operator == op) {
+                    currentOperatorNode = node;
+                    return true;
                 }
                 node = node.next;
             }
-            return null;
+            return false;
         }
 
-        Node getNodeByNumber(double num){
-            Node node = head;
-            while(node != null) {
-                if(node.number == num) {
-                    return node;
-                }
-                node = node.next;
+        /*
+         * Finds a node previous of currentOperatorNode
+         * and returns its number.
+         * Returns 0 if the node is not found.
+         */
+        public double getFirstOperand() {
+            if (currentOperatorNode == null) {
+                return 0;
             }
-            return null;
+            if (currentOperatorNode.prev == null) {
+                return 0;
+            }
+            return currentOperatorNode.prev.number;
         }
 
-        boolean append(char op, double num) {
-            Node newNode = new Node(op, num);
-            Node tail = getTail();
-            if(tail == null) {
-                head = newNode;
-                head.next = null;
-                head.prev = null;
+        /*
+         * Finds a node next of currentOperatorNode
+         * and returns its number.
+         * Returns 0 if the node is not found.
+         */
+        public double getSecondOperand() {
+            if (currentOperatorNode == null) {
+                return 0;
             }
-            else {
-                tail.next = newNode;
-                newNode.next = null;
-                newNode.prev = tail;
+            if (currentOperatorNode.next == null) {
+                return 0;
             }
+            return currentOperatorNode.next.number;
+        }
+
+        /*
+         * Writes the given number into the node previous of currentOperatorNode.
+         * Deletes currentOperatorNode.
+         * If isTwoOperandOperation is true, deletes the node next of currentOperatorNode as well.
+         * Returns true if finished successfully, or false if nodes weren't found.
+         */
+        public boolean writeInResult(double num, boolean isTwoOperandOperation) {
+            if (currentOperatorNode == null) {
+                return false;
+            }
+            if (currentOperatorNode.prev == null) {
+                return false;
+            }
+            currentOperatorNode.prev.number = num;
+            if (isTwoOperandOperation) {
+                remove(currentOperatorNode.next);
+            }
+            return remove(currentOperatorNode);
+        }
+
+        /*
+         * Changes the operator and number to given values.
+         * Returns true if finished successfully, or false if nodes weren't found.
+         */
+        public boolean changeOperation(char newOp, double newSecond) {
+            if (currentOperatorNode == null) {
+                return false;
+            }
+            if (currentOperatorNode.next == null) {
+                return false;
+            }
+            currentOperatorNode.operator = newOp;
+            currentOperatorNode.next.number = newSecond;
             return true;
         }
 
-        boolean remove(Node toRemove) {
-            if(toRemove == null || getHead() == null) {
+        /*
+         * Returns the number in the head node.
+         * Returns 0 if the list is empty.
+         */
+        public double getHeadNum() {
+            if(head == null){
+                return 0;
+            }
+            return head.number;
+        }
+
+        /*
+         * Returns true if the list has only one node.
+         * Returns false if the list is empty or has more than one node.
+         */
+        public boolean isRootOnly() {
+            if(head == null){
                 return false;
             }
-            if(head == toRemove) {
+            return head.next == null;
+        }
+
+        /*
+         * Removes the given node.
+         * Returns true if finished successfully, or false if the node wasn't found.
+         */
+        private boolean remove(Node toRemove) {
+            if (toRemove == null || head == null) {
+                return false;
+            }
+            if (head == toRemove) {
                 head = head.next;
             }
-            if(toRemove.next != null) {
+            if (toRemove.next != null) {
                 toRemove.next.prev = toRemove.prev;
             }
-            if(toRemove.prev != null) {
+            if (toRemove.prev != null) {
                 toRemove.prev.next = toRemove.next;
             }
             return true;
         }
 
+        /*
+         * Adds a node to the end of the list with given parameters.
+         *
+         */
+        public void append(char op, double num) {
+            Node newNode = new Node(op, num);
+            Node tail = getTail();
+            if (tail == null) {
+                head = newNode;
+                head.next = null;
+                head.prev = null;
+            } else {
+                tail.next = newNode;
+                newNode.next = null;
+                newNode.prev = tail;
+            }
+        }
     }
 
-
+    /*
+     * Prints the list
+     */
     private static void testPrint(DoublyLinkedList list) {
         DoublyLinkedList.Node tmp = list.head;
         while(tmp != null) {
@@ -211,78 +299,75 @@ public class CalcLib {
         // invalid factorial input
         // modulo natural number
         // division by zero
-        // no operator
-
+        // no operator - calculate skonci a nebude jenom root?
+        // numbers to large - na to asi metodu
         return "valid";
     }
 
+    /*
     public static void writeTwoOperandOperation(char operator,
             double num, DoublyLinkedList list) {
-        list.getNodeByOperator(operator).prev.number = num;
-        list.remove(list.getNodeByOperator(operator).next);
-        list.remove(list.getNodeByOperator(operator));
+        list.findOperator(operator).prev.number = num;
+        list.remove(list.findOperator(operator).next);
+        list.remove(list.findOperator(operator));
     }
+    */
 
     public static void calculate(DoublyLinkedList list){
         double result;
 
         // calculate fact
-        while(list.getNodeByOperator('!') != null) {
-            result = list.getNodeByOperator('!').prev.number;
+        while(list.findOperator('!')) {
+            result = list.getFirstOperand();
             for(int i = (int)result - 1; i > 0; i--) {
                 result *= i;
             }
-            list.getNodeByOperator('!').prev.number = result;
-            list.remove(list.getNodeByOperator('!'));
+            list.writeInResult(result, false);
         }
 
         // calculate power
-        while(list.getNodeByOperator('^') != null) {
-            result = Math.pow(list.getNodeByOperator('^').prev.number,
-                    list.getNodeByOperator('^').next.number);
-            writeTwoOperandOperation('^', result, list);
+        while(list.findOperator('^')) {
+            result = Math.pow(list.getFirstOperand(),
+                    list.getSecondOperand());
+            list.writeInResult(result, true);
         }
 
         // calculate root
-        while(list.getNodeByOperator('|') != null) {
-            result = Math.pow(list.getNodeByOperator('|').prev.number,
-                    1.0f/list.getNodeByOperator('|').next.number);
-            writeTwoOperandOperation('|', result, list);
+        while(list.findOperator('|')) {
+            result = Math.pow(list.getFirstOperand(),
+                    1.0f/list.getSecondOperand());
+            list.writeInResult(result, true);
         }
 
         // Calculate modulo
-        while(list.getNodeByOperator('%') != null) {
-            result = list.getNodeByOperator('%').prev.number %
-                    list.getNodeByOperator('%').next.number;
-            writeTwoOperandOperation('%', result, list);
+        while(list.findOperator('%')) {
+            result = list.getFirstOperand() %
+                    list.getSecondOperand();
+            list.writeInResult(result, true);
         }
 
         // Convert division to multiplication
-        while(list.getNodeByOperator('/') != null) {
-            list.getNodeByOperator('/').next.number =
-                    1 / list.getNodeByOperator('/').next.number;
-            list.getNodeByOperator('/').operator = '*';
+        while(list.findOperator('/')) {
+            list.changeOperation('*', 1 / list.getSecondOperand());
         }
 
         // Calculate multiplication
-        while(list.getNodeByOperator('*') != null) {
-            result = list.getNodeByOperator('*').prev.number *
-                    list.getNodeByOperator('*').next.number;
-            writeTwoOperandOperation('*', result, list);
+        while(list.findOperator('*')) {
+            result = list.getFirstOperand() *
+                    list.getSecondOperand();
+            list.writeInResult(result, true);
         }
 
         // Convert minus sings to plus signs (negating the next operand)
-        while(list.getNodeByOperator('-') != null) {
-            list.getNodeByOperator('-').next.number =
-                    - list.getNodeByOperator('-').next.number;
-            list.getNodeByOperator('-').operator = '+';
+        while(list.findOperator('-')) {
+            list.changeOperation('+', - list.getSecondOperand());
         }
 
         // Calculate plus
-        while(list.getNodeByOperator('+') != null) {
-            result = list.getNodeByOperator('+').prev.number +
-                    list.getNodeByOperator('+').next.number;
-            writeTwoOperandOperation('+', result, list);
+        while(list.findOperator('+')) {
+            result = list.getFirstOperand() +
+                    list.getSecondOperand();
+            list.writeInResult(result, true);
         }
     }
 
@@ -319,10 +404,10 @@ public class CalcLib {
 
         // Calculate the result using the doubly linked list
         calculate(list);
-        if(list.getHead().next != null) {
+        if(!list.isRootOnly()) {
             return "ERROR - could not compute";
         }
-        double result = list.getHead().number;
+        double result = list.getHeadNum();
 
         // If the result is a natural number, return it as an integer
         if(result == Math.floor(result)) {
