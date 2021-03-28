@@ -405,8 +405,6 @@ public class Tests {
             assertThrows(ArithmeticException.class,
                     () -> CalcLib.main("1 + _1"));
             assertThrows(ArithmeticException.class,
-                    () -> CalcLib.main("1 + ~1"));
-            assertThrows(ArithmeticException.class,
                     () -> CalcLib.main("1 + `1"));
             assertThrows(ArithmeticException.class,
                     () -> CalcLib.main("1 + a1"));

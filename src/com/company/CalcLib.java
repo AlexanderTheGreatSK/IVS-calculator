@@ -260,6 +260,14 @@ public class CalcLib {
             tmp = tmp.replace("pow(", "");
             tmp = tmp.replace(")", "");
             tmp = tmp.replace(",", "^");
+
+            if(tmp.charAt(0) == '-'){
+                tmp = tmp.replace('-', '~');
+            }
+            if(tmp.charAt(tmp.indexOf('^') + 1) == '-'){
+                tmp = tmp.replace('-', '~');
+            }
+            System.out.println(tmp);
             input = input.replace(orig, tmp);
         }
         
@@ -275,8 +283,13 @@ public class CalcLib {
             tmp = tmp.replace("root(", "");
             tmp = tmp.replace(")", "");
             tmp = tmp.replace(",", "|");
+            if(tmp.charAt(0) == '-'){
+                tmp = tmp.replace('-', '~');
+            }
+            if(tmp.charAt(tmp.indexOf('^') + 1) == '-'){
+                tmp = tmp.replace('-', '~');
+            }
             input = input.replace(orig, tmp);
-            indexFrom = input.indexOf("root");
         }
 
         // Replace all commas with dots
@@ -288,8 +301,13 @@ public class CalcLib {
         char ch = '0';
         for(int i = 0; i < len; i++){
             ch = input.charAt(i);
-            if((ch >= '0' && ch <= '9') || ch == '.'){
-                temp = temp + ch;
+            if((ch >= '0' && ch <= '9') || ch == '.' || ch == '~'){
+                if(temp.equals("") && ch == '~'){
+                    temp = "-";
+                }
+                else {
+                    temp = temp + ch;
+                }
                 continue;
             }else if(!temp.isEmpty()){
                 list.append('\0', Double.parseDouble(temp));
@@ -331,15 +349,19 @@ public class CalcLib {
 
         // division by zero
         list.resetCurrentNode();
-        while(list.findOperator('/', true)){
+        while(list.findOperator('/', true)) {
             if(list.getSecondOperand() == 0){
                 throw new ArithmeticException("Division by zero");
             }
         }
 
         list.resetCurrentNode();
-        //while(list.findOperator('/', true)) {
-        //}
+        while(list.findOperator('|', true)) {
+
+            if(list.getSecondOperand()%2 == 0 && list.getFirstOperand() < 0) {
+                throw new ArithmeticException("Even root of a negative number");
+            }
+        }
 
 
         // even root of a negative number
@@ -437,6 +459,8 @@ public class CalcLib {
 
         // Parse the input string into a doubly linked list
         DoublyLinkedList list = parser(input);
+
+        testPrint(list);
 
         // Check if the input string was successfully parsed
         /*
