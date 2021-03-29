@@ -1,10 +1,19 @@
+/*
+ * cool hlavicka
+ */
+
 package com.company;
 
 import java.text.DecimalFormat;
 
+
 public class CalcLib {
 
     private static final String operatorsList = "+-*/!%^|";
+
+    /**
+     * neco chytryho k listu
+     */
     public static class DoublyLinkedList {
 
         /**
@@ -28,7 +37,9 @@ public class CalcLib {
         Node currentOperatorNode;
 
         /**
-         * Finds and returns the tail (last node).
+         * Finds and the tail
+         *
+         * @return tail node
          */
         private Node getTail() {
             Node node = head;
@@ -41,6 +52,9 @@ public class CalcLib {
             return node;
         }
 
+        /**
+         * Sets currentOperatorNode to the head of the list
+         */
         public void resetCurrentNode() {
             currentOperatorNode = head;
         }
@@ -48,14 +62,23 @@ public class CalcLib {
         /**
          * Finds the first node (from head to tail) representing the given
          * operator and saves it into currentOperatorNode.
-         * Returns true if given operator was found, or false if given
-         * operator was not present in the list.
-         * If after the last call of this method the node was not removed, TODO
+         *
+         * @param op  a character representing the operation we are searching
+         *            for
+         * @param nextNotFirst  If false, it will save the position of the
+         *                      first matching operator it finds.
+         *                      If true, it will save the position of the
+         *                      next matching operator instead.
+         * @return true if given operator was found, or false if given
+         *         operator was not present in the list.
          */
         public boolean findOperator(char op, boolean nextNotFirst) {
-            Node node = head;
+            Node node;
             if(nextNotFirst) {
                 node = currentOperatorNode.next;
+            }
+            else {
+                node = head;
             }
             while (node != null) {
                 if (node.operator == op) {
@@ -69,8 +92,9 @@ public class CalcLib {
 
         /**
          * Finds a node previous of currentOperatorNode
-         * and returns its number.
-         * Throws an arithmetic exception if the node is not found.
+         *
+         * @return  number of the node previous to currentOperatorNode
+         * @throws ArithmeticException if the node is not found.
          */
         public double getFirstOperand()
                 throws ArithmeticException {
@@ -85,8 +109,9 @@ public class CalcLib {
 
         /**
          * Finds a node next of currentOperatorNode
-         * and returns its number.
-         * Throws an arithmetic exception if the node is not found.
+         *
+         * @return  number of the node next to currentOperatorNode
+         * @throws ArithmeticException if the node is not found.
          */
         public double getSecondOperand()
                 throws ArithmeticException {
@@ -100,77 +125,63 @@ public class CalcLib {
         }
 
         /**
-         * Writes the given number into the node previous of currentOperatorNode.
-         * Deletes currentOperatorNode.
-         * If isTwoOperandOperation is true, deletes the node next of
-         * currentOperatorNode as well.
-         * Returns true if finished successfully, or false if nodes weren't found.
+         * Writes the given number into the node previous to the
+         * currentOperatorNode while deleting currentOperatorNode.
+         * If isTwoOperandOperation is true, also deletes the node next of
+         * currentOperatorNode.
+         *
+         * @param num  number to be written to the previous node.
+         * @param isTwoOperandOperation  if true, removes two nodes (current
+         *                               and next). If false, removes only
+         *                               the current node.
          */
-        public boolean writeInResult(double num, boolean isTwoOperandOperation) {
-            if (currentOperatorNode == null) {
-                return false;
-            }
-            if (currentOperatorNode.prev == null) {
-                return false;
-            }
+        public void writeInResult(double num, boolean isTwoOperandOperation) {
             currentOperatorNode.prev.number = num;
             if (isTwoOperandOperation) {
                 remove(currentOperatorNode.next);
             }
-            return remove(currentOperatorNode);
+            remove(currentOperatorNode);
         }
 
         /**
-         * Changes the operator and number to given values.
-         * Returns true if finished successfully, or false if nodes weren't found.
+         * Changes the first operand (number of the node previous of currentOperatorNode) of the current node
+         * to the given number.
+         *
+         * @param newOperand  new first operand
          */
-        public boolean changeFirstOperand(double newOperand) {
-            if (currentOperatorNode == null) {
-            }
-            if (currentOperatorNode.prev == null) {
-                return false;
-            }
+        public void changeFirstOperand(double newOperand) {
             currentOperatorNode.prev.number = newOperand;
-            return true;
         }
 
         /**
-         * Changes the operator to the given value.
-         * Returns true if finished successfully, or false if node wasn't found.
+         * Changes the operator of the current node
+         * to the given character representing an operation.
+         *
+         * @param newOp  new operator
          */
-        public boolean changeOperator(char newOp) {
-            if (currentOperatorNode == null) {
-                return false;
-            }
+        public void changeOperator(char newOp) {
             currentOperatorNode.operator = newOp;
-            return true;
-        }
-
-        public boolean changeSecondOperand(double newOperand) {
-            if (currentOperatorNode == null) {
-                return false;
-            }
-            if (currentOperatorNode.next == null) {
-                return false;
-            }
-            currentOperatorNode.next.number = newOperand;
-            return true;
         }
 
         /**
-         * Returns the number in the head node.
-         * Returns 0 if the list is empty.
+         * Changes the second operand (number of the node next of currentOperatorNode) of the current node
+         * to the given number.
+         *
+         * @param newOperand  new second operand
+         */
+        public void changeSecondOperand(double newOperand) {
+            currentOperatorNode.next.number = newOperand;
+        }
+
+        /**
+         * @return the the first number of the linked list.
          */
         public double getHeadNum() {
-            if(head == null){
-                return 0;
-            }
             return head.number;
         }
 
         /**
-         * Returns true if the list has only one node.
-         * Returns false if the list is empty or has more than one node.
+         * @return true if the list has only one node, false otherwise.
          */
         public boolean isRootOnly() {
             if(head == null){
@@ -179,10 +190,10 @@ public class CalcLib {
             return head.next == null;
         }
 
+        /**
+         * @return true if the next node is an operator, false if it's a number
+         */
         public boolean isNextNodeAnOperator() {
-            if(currentOperatorNode == null) {
-                return false;
-            }
             if(currentOperatorNode.next == null) {
                 return false;
             }
@@ -191,12 +202,12 @@ public class CalcLib {
 
         /**
          * Removes the given node.
-         * Returns true if finished successfully,
-         * or false if the node wasn't found.
+         *
+         * @param toRemove  node that is supposed to be removed
          */
-        private boolean remove(Node toRemove) {
+        private void remove(Node toRemove) {
             if (toRemove == null || head == null) {
-                return false;
+                return;
             }
             if (head == toRemove) {
                 head = head.next;
@@ -207,11 +218,14 @@ public class CalcLib {
             if (toRemove.prev != null) {
                 toRemove.prev.next = toRemove.next;
             }
-            return true;
         }
 
         /**
-         * Adds a node to the end of the list with given parameters.
+         * Appends a node to the list with given operation or number.
+         *
+         * @param op  a character representing the operation supposed to be
+         *            appended
+         * @param num  a number supposed to be appended
          */
         public void append(char op, double num) {
             Node newNode = new Node(op, num);
@@ -228,19 +242,6 @@ public class CalcLib {
         }
     }
 
-    //TODO remove
-    private static void testPrint(DoublyLinkedList list) {
-        DoublyLinkedList.Node tmp = list.head;
-        while(tmp != null) {
-            if(tmp.operator != '\0') {
-                System.out.println(tmp.operator);
-            } else {
-                System.out.println(tmp.number);
-            }
-            tmp = tmp.next;
-        }
-    }
-
     /**
      * Parses the input string into a doubly linked list - each operand and
      * operator is a single node.
@@ -252,7 +253,7 @@ public class CalcLib {
      * @param input  a string containing exactly what the user entered
      * @return list  The doubly linked list containing all operations and
      *               operands
-     * @throws ArithmeticException
+     * @throws ArithmeticException if it fails to parse the input
      */
     public static DoublyLinkedList parser(String input)
             throws ArithmeticException{
@@ -282,10 +283,6 @@ public class CalcLib {
             if(tmp.indexOf(',') == -1) {
                 throw new ArithmeticException("Malformed power expression.");
             }
-            //String[] operands = tmp.split(",");
-            //Double.parseDouble(operands[0]);
-            //Double.parseDouble(operands[1]);
-
             tmp = tmp.replace(",", "^");
             if(tmp.charAt(0) == '-'){
                 tmp = tmp.replace('-', '~');
@@ -369,10 +366,9 @@ public class CalcLib {
      *
      * @param list  The doubly linked list containing all operations and
      *              operands
-     * @return TODO
-     * @throws ArithmeticException
+     * @throws ArithmeticException if the input is invalid
      */
-    public static String validate(DoublyLinkedList list)
+    public static void validate(DoublyLinkedList list)
             throws ArithmeticException{
         // invalid factorial input
         list.resetCurrentNode();
@@ -439,7 +435,6 @@ public class CalcLib {
                 }
             }
         }
-        return "valid";
     }
 
     /**
@@ -486,10 +481,8 @@ public class CalcLib {
                 list.changeFirstOperand(-list.getFirstOperand());
                 negativeIndex = true;
             }
-
             result = Math.pow(list.getFirstOperand(),
                     1.0f/list.getSecondOperand());
-
             if(negativeIndex){
                 result = -result;
             }
@@ -534,16 +527,17 @@ public class CalcLib {
     /**
      * Parses the input string into a doubly linked list, checks if the input
      * is valid, calculates the result, converts it to a string in desired
-     * format and finally, returns it (TODO or an error) as a string.
+     * format and finally, returns it as a string.
      *
      * @param input  a string containing exactly what the user entered
      * @return result  a string containing the result of the calculation -
      *                 a single number in decimal form with a maximum of 8
      *                 floating point digits (or exponential form if the
      *                 number is bigger than 2^52)
-     *                 TODO if the input is invalid, returns..
+     * @throws ArithmeticException if the input is not computable
      */
-    public static String main(String input) {
+    public static String main(String input)
+            throws ArithmeticException{
 
         // If the string is empty
         if(input.equals("")){
@@ -553,20 +547,17 @@ public class CalcLib {
         // Parse the input string into a doubly linked list
         DoublyLinkedList list = parser(input);
 
-        //testPrint(list);
-
         // Check if the input string is valid
-        String validation = validate(list);
-        if(!validation.equals("valid")) {
-            throw new ArithmeticException("");
-        }
+        validate(list);
 
         // Calculate the result using the doubly linked list
         calculate(list);
 
         if(!list.isRootOnly()) {
-            throw new ArithmeticException("");
+            throw new ArithmeticException(
+                    "Could not compute the entered expression.");
         }
+
         double result = list.getHeadNum();
 
         if(result > Math.pow(2, 52)) {
