@@ -469,8 +469,8 @@ public class Tests {
         @Test
         @DisplayName("Empty input")
         void EmptyInput() {
-            assertThrows(ArithmeticException.class,
-                    () -> CalcLib.main(""));
+            assertEquals("",
+                    CalcLib.main(""));
         }
     }
 
