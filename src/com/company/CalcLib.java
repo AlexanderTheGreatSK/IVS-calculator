@@ -372,7 +372,6 @@ public class CalcLib {
                 throw new ArithmeticException(
                         "The exponent of power is not a whole number");
             }
-
         }
 
 
@@ -422,8 +421,18 @@ public class CalcLib {
 
         // calculate root
         while(list.findOperator('|', false)) {
+            boolean negativeIndex = false;
+            if(list.getFirstOperand() < 0){
+                //TODO invert the left operand
+                negativeIndex = true;
+            }
+
             result = Math.pow(list.getFirstOperand(),
                     1.0f/list.getSecondOperand());
+
+            if(negativeIndex){
+                result = -result;
+            }
             list.writeInResult(result, true);
         }
 
