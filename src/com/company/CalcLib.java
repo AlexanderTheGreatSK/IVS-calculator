@@ -80,8 +80,6 @@ public class CalcLib {
             return currentOperatorNode.prev.number;
         }
 
-
-
         /**
          * Finds a node next of currentOperatorNode
          * and returns its number.
@@ -208,11 +206,16 @@ public class CalcLib {
 
     /**
      * Parses the input string into a doubly linked list - each operand and
-     * operator is a single node
+     * operator is a single node.
+     *
+     * Before appending operands and operators to the list, removes all white
+     * characters, converts mod to '%, pow to '^', root to '|'
+     * and replaces ',' with '.'.
      *
      * @param input  a string containing exactly what the user entered
      * @return list  The doubly linked list containing all operations and
      *               operands
+     * @throws ArithmeticException
      */
     public static DoublyLinkedList parser(String input)
             throws ArithmeticException{
@@ -367,9 +370,17 @@ public class CalcLib {
 
     /**
      * Searches the doubly linked list for operations with the highest
-     * precedence, calculates the result of these operations, continues with
-     * operations with lower precedence and finishes if there is only one item
+     * precedence, calculates the result of these operations and replaces it's
+     * nodes (operand(s) and the operation) with the result, then continues with
+     * operations with lower precedence and ends if there is only one item
      * left in the linked list - the result of the calculation.
+     *
+     * Precedence: factorial > power > root > modulo >
+     * division and multiplication > subtraction and addition
+     *
+     * For easier implementation, every division is converted to multiplication
+     * (2/2 -> 2 * 1/2) and subtraction to addition (2-2 -> 2 + -2) before
+     * the calculation.
      *
      * @param list  The doubly linked list containing all operations and
      *              operands
@@ -435,14 +446,15 @@ public class CalcLib {
 
     /**
      * Parses the input string into a doubly linked list, checks if the input
-     * is valid, calculates the result, converts the result to a desired
-     * format and finally, returns the result as a string.
+     * is valid, calculates the result, converts it to a string in desired
+     * format and finally, returns it (TODO or an error) as a string.
      *
      * @param input  a string containing exactly what the user entered
      * @return result  a string containing the result of the calculation -
      *                 a single number in decimal form with a maximum of 8
      *                 floating point digits (or exponential form if the
      *                 number is bigger than 2^52)
+     *                 TODO if the input is invalid, returns..
      */
     public static String main(String input) {
 
