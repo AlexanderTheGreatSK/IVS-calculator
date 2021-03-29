@@ -340,7 +340,7 @@ public class CalcLib {
         while(list.findOperator('%', true)) {
             if(!isNatural(list.getSecondOperand())){
                 throw new ArithmeticException("The divisor in the modulo " +
-                        "operation is not a natural number");
+                        "operation is not a natural number.");
             }
         }
 
@@ -348,17 +348,33 @@ public class CalcLib {
         list.resetCurrentNode();
         while(list.findOperator('/', true)) {
             if(list.getSecondOperand() == 0){
-                throw new ArithmeticException("Division by zero");
+                throw new ArithmeticException("Division by zero.");
             }
         }
 
         list.resetCurrentNode();
         while(list.findOperator('|', true)) {
-
             if(list.getSecondOperand()%2 == 0 && list.getFirstOperand() < 0) {
-                throw new ArithmeticException("Even root of a negative number");
+                throw new ArithmeticException("Even root of a negative number.");
+            }
+            if(list.getSecondOperand() == 0){
+                throw new ArithmeticException("The root index is zero.");
+            }
+            if(Math.round(list.getSecondOperand()) != list.getSecondOperand()){
+                throw new ArithmeticException(
+                        "The root index is not a whole number");
             }
         }
+
+        list.resetCurrentNode();
+        while(list.findOperator('^', true)){
+            if(Math.round(list.getSecondOperand()) != list.getSecondOperand()){
+                throw new ArithmeticException(
+                        "The exponent of power is not a whole number");
+            }
+
+        }
+
 
         // even root of a negative number
 

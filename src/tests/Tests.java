@@ -446,17 +446,11 @@ public class Tests {
                     () -> CalcLib.main("root(2, 1.2)"));
             assertThrows(ArithmeticException.class,
                     () -> CalcLib.main("pow(2, 1.2)"));
-            assertThrows(ArithmeticException.class,
-                    () -> CalcLib.main("pow(2, -1)"));
 
             assertThrows(ArithmeticException.class,
                     () -> CalcLib.main("1.1 mod 1.1"));
             assertThrows(ArithmeticException.class,
                     () -> CalcLib.main("1.1 % 1.1"));
-            assertThrows(ArithmeticException.class,
-                    () -> CalcLib.main("1.1 mod 1"));
-            assertThrows(ArithmeticException.class,
-                    () -> CalcLib.main("1.1 % 1"));
             assertThrows(ArithmeticException.class,
                     () -> CalcLib.main("1 mod 1.1"));
             assertThrows(ArithmeticException.class,
