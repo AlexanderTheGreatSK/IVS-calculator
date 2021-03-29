@@ -193,9 +193,7 @@ public class CalcLib {
         }
     }
 
-    /**
-     * Prints the list
-     */
+    //TODO remove
     private static void testPrint(DoublyLinkedList list) {
         DoublyLinkedList.Node tmp = list.head;
         while(tmp != null) {
@@ -209,9 +207,13 @@ public class CalcLib {
     }
 
     /**
-    * Parses the input string into a doubly linked list
-    * (Each operand and operator is a single node)
-    */
+     * Parses the input string into a doubly linked list - each operand and
+     * operator is a single node
+     *
+     * @param input  a string containing exactly what the user entered
+     * @return list  The doubly linked list containing all operations and
+     *               operands
+     */
     public static DoublyLinkedList parser(String input)
             throws ArithmeticException{
         DoublyLinkedList list = new DoublyLinkedList();
@@ -301,6 +303,12 @@ public class CalcLib {
         return list;
     }
 
+    /**
+     * Checks if a number is natural (whole) or not.
+     *
+     * @param num  A double precision number
+     * @return true if the number is natural, false if it is not
+     */
     public static boolean isNatural(double num){
         return Math.round(num) == num;
     }
@@ -308,6 +316,11 @@ public class CalcLib {
     /**
      * Checks the parsed input for invalid operations, forbidden characters
      * and so on.
+     *
+     * @param list  The doubly linked list containing all operations and
+     *              operands
+     * @return TODO
+     * @throws ArithmeticException
      */
     public static String validate(DoublyLinkedList list)
             throws ArithmeticException{
@@ -344,9 +357,7 @@ public class CalcLib {
             }
         }
 
-
         // even root of a negative number
-
 
         // anything else than two numbers separated by a comma in parentheses
         // two operators without a number separating them
@@ -355,11 +366,14 @@ public class CalcLib {
     }
 
     /**
-    * Searches the doubly linked list for operations with the highest
-    * precedence, calculates the result of the operation, continues with
-    * operations with lower precedence and finishes if there is only one item
-    * in the linked list - the result of the calculation.
-    */
+     * Searches the doubly linked list for operations with the highest
+     * precedence, calculates the result of these operations, continues with
+     * operations with lower precedence and finishes if there is only one item
+     * left in the linked list - the result of the calculation.
+     *
+     * @param list  The doubly linked list containing all operations and
+     *              operands
+     */
     public static void calculate(DoublyLinkedList list){
         double result;
 
@@ -420,11 +434,15 @@ public class CalcLib {
 
 
     /**
-     * Takes a string in which is the desired calculation, parses it into a
-     * doubly linked list, checks if the input is valid, calculates the result,
-     * converts the result to exponential format if needed and truncates the
-     * floating point digits to 8 if needed and finally, returns the result
-     * as a string.
+     * Parses the input string into a doubly linked list, checks if the input
+     * is valid, calculates the result, converts the result to a desired
+     * format and finally, returns the result as a string.
+     *
+     * @param input  a string containing exactly what the user entered
+     * @return result  a string containing the result of the calculation -
+     *                 a single number in decimal form with a maximum of 8
+     *                 floating point digits (or exponential form if the
+     *                 number is bigger than 2^52)
      */
     public static String main(String input) {
 
