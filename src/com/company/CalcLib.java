@@ -4,6 +4,7 @@ import java.text.DecimalFormat;
 
 public class CalcLib {
 
+    private static final String operatorsList = "+-*/!%^|";
     public static class DoublyLinkedList {
 
         /**
@@ -45,9 +46,10 @@ public class CalcLib {
         }
 
         /**
-         * Finds the first node (from head to tail) representing the given operator
-         * and saves it into currentOperatorNode.
-         * Returns true if given operator was found, or false if given operator was not present in the list.
+         * Finds the first node (from head to tail) representing the given
+         * operator and saves it into currentOperatorNode.
+         * Returns true if given operator was found, or false if given
+         * operator was not present in the list.
          * If after the last call of this method the node was not removed, TODO
          */
         public boolean findOperator(char op, boolean nextNotFirst) {
@@ -68,14 +70,15 @@ public class CalcLib {
         /**
          * Finds a node previous of currentOperatorNode
          * and returns its number.
-         * Returns 0 if the node is not found.
+         * Throws an arithmetic exception if the node is not found.
          */
-        public double getFirstOperand() {
+        public double getFirstOperand()
+                throws ArithmeticException {
             if (currentOperatorNode == null) {
-                return 0;
+                throw new ArithmeticException("Malformed expression.");
             }
             if (currentOperatorNode.prev == null) {
-                return 0;
+                throw new ArithmeticException("Malformed expression.");
             }
             return currentOperatorNode.prev.number;
         }
@@ -83,14 +86,15 @@ public class CalcLib {
         /**
          * Finds a node next of currentOperatorNode
          * and returns its number.
-         * Returns 0 if the node is not found.
+         * Throws an arithmetic exception if the node is not found.
          */
-        public double getSecondOperand() {
+        public double getSecondOperand()
+                throws ArithmeticException {
             if (currentOperatorNode == null) {
-                return 0;
+                throw new ArithmeticException("Malformed expression.");
             }
             if (currentOperatorNode.next == null) {
-                return 0;
+                throw new ArithmeticException("Malformed expression.");
             }
             return currentOperatorNode.next.number;
         }
@@ -98,7 +102,8 @@ public class CalcLib {
         /**
          * Writes the given number into the node previous of currentOperatorNode.
          * Deletes currentOperatorNode.
-         * If isTwoOperandOperation is true, deletes the node next of currentOperatorNode as well.
+         * If isTwoOperandOperation is true, deletes the node next of
+         * currentOperatorNode as well.
          * Returns true if finished successfully, or false if nodes weren't found.
          */
         public boolean writeInResult(double num, boolean isTwoOperandOperation) {
@@ -119,15 +124,36 @@ public class CalcLib {
          * Changes the operator and number to given values.
          * Returns true if finished successfully, or false if nodes weren't found.
          */
-        public boolean changeOperation(char newOp, double newSecond) {
+        public boolean changeFirstOperand(double newOperand) {
+            if (currentOperatorNode == null) {
+            }
+            if (currentOperatorNode.prev == null) {
+                return false;
+            }
+            currentOperatorNode.prev.number = newOperand;
+            return true;
+        }
+
+        /**
+         * Changes the operator to the given value.
+         * Returns true if finished successfully, or false if node wasn't found.
+         */
+        public boolean changeOperator(char newOp) {
+            if (currentOperatorNode == null) {
+                return false;
+            }
+            currentOperatorNode.operator = newOp;
+            return true;
+        }
+
+        public boolean changeSecondOperand(double newOperand) {
             if (currentOperatorNode == null) {
                 return false;
             }
             if (currentOperatorNode.next == null) {
                 return false;
             }
-            currentOperatorNode.operator = newOp;
-            currentOperatorNode.next.number = newSecond;
+            currentOperatorNode.next.number = newOperand;
             return true;
         }
 
@@ -153,9 +179,20 @@ public class CalcLib {
             return head.next == null;
         }
 
+        public boolean isNextNodeAnOperator() {
+            if(currentOperatorNode == null) {
+                return false;
+            }
+            if(currentOperatorNode.next == null) {
+                return false;
+            }
+            return currentOperatorNode.next.operator != '\0';
+        }
+
         /**
          * Removes the given node.
-         * Returns true if finished successfully, or false if the node wasn't found.
+         * Returns true if finished successfully,
+         * or false if the node wasn't found.
          */
         private boolean remove(Node toRemove) {
             if (toRemove == null || head == null) {
@@ -220,7 +257,6 @@ public class CalcLib {
     public static DoublyLinkedList parser(String input)
             throws ArithmeticException{
         DoublyLinkedList list = new DoublyLinkedList();
-        String operatorsList = "+-*/!%^|";
 
         // Removes all whitespaces and non-visible characters
         input = input.replaceAll("\\s+","");
@@ -242,6 +278,14 @@ public class CalcLib {
             tmp = orig;
             tmp = tmp.replace("pow(", "");
             tmp = tmp.replace(")", "");
+
+            if(tmp.indexOf(',') == -1) {
+                throw new ArithmeticException("Malformed power expression.");
+            }
+            //String[] operands = tmp.split(",");
+            //Double.parseDouble(operands[0]);
+            //Double.parseDouble(operands[1]);
+
             tmp = tmp.replace(",", "^");
             if(tmp.charAt(0) == '-'){
                 tmp = tmp.replace('-', '~');
@@ -249,11 +293,11 @@ public class CalcLib {
             if(tmp.charAt(tmp.indexOf('^') + 1) == '-'){
                 tmp = tmp.replace('-', '~');
             }
-            System.out.println(tmp);
             input = input.replace(orig, tmp);
         }
         
-        // Converts "root" to '|', for example root(5,2) => 5|2 (represents sqrt(5))
+        // Converts "root" to '|'
+        // For example root(5,2) => 5|2 (represents sqrt(5))
         while(true){
             indexFrom = input.indexOf("root");
             if(indexFrom == -1){
@@ -264,6 +308,9 @@ public class CalcLib {
             tmp = orig;
             tmp = tmp.replace("root(", "");
             tmp = tmp.replace(")", "");
+            if(tmp.indexOf(',') == -1) {
+                throw new ArithmeticException("Malformed root expression.");
+            }
             tmp = tmp.replace(",", "|");
             if(tmp.charAt(0) == '-'){
                 tmp = tmp.replace('-', '~');
@@ -281,10 +328,10 @@ public class CalcLib {
         String temp = "";
         int len = input.length();
         char ch = '0';
-        for(int i = 0; i < len; i++){
+        for(int i = 0; i < len; i++) {
             ch = input.charAt(i);
-            if((ch >= '0' && ch <= '9') || ch == '.' || ch == '~'){
-                if(temp.equals("") && ch == '~'){
+            if((ch >= '0' && ch <= '9') || ch == '.' || ch == '~') {
+                if(temp.equals("") && ch == '~') {
                     temp = "-";
                 }
                 else {
@@ -295,7 +342,7 @@ public class CalcLib {
                 list.append('\0', Double.parseDouble(temp));
                 temp = "";
             }
-            if(operatorsList.indexOf(ch) == -1){
+            if(operatorsList.indexOf(ch) == -1) {
                 throw new ArithmeticException("Invalid character inserted");
             }
             list.append(ch, 0);
@@ -331,7 +378,8 @@ public class CalcLib {
         list.resetCurrentNode();
         while(list.findOperator('!', true)) {
             if(!isNatural(list.getFirstOperand())){
-                throw new ArithmeticException("The factorial argument is not a natural number");
+                throw new ArithmeticException(
+                        "The factorial argument is not a natural number");
             }
         }
 
@@ -352,6 +400,7 @@ public class CalcLib {
             }
         }
 
+        // root problems
         list.resetCurrentNode();
         while(list.findOperator('|', true)) {
             if(list.getSecondOperand()%2 == 0 && list.getFirstOperand() < 0) {
@@ -366,20 +415,30 @@ public class CalcLib {
             }
         }
 
+        // power problems
         list.resetCurrentNode();
-        while(list.findOperator('^', true)){
+        while(list.findOperator('^', true)) {
             if(Math.round(list.getSecondOperand()) != list.getSecondOperand()){
                 throw new ArithmeticException(
                         "The exponent of power is not a whole number");
             }
         }
 
-
-        // even root of a negative number
-
-        // anything else than two numbers separated by a comma in parentheses
         // two operators without a number separating them
-        // odd number of parentheses
+        list.resetCurrentNode();
+        char op;
+        for(int i = 0; i < operatorsList.length(); i++) {
+            op = operatorsList.charAt(i);
+            if(op == '!'){
+                continue;
+            }
+            while(list.findOperator(op, true)) {
+                if(list.isNextNodeAnOperator()){
+                    throw new ArithmeticException("There are two operators " +
+                            "between which there is no operand");
+                }
+            }
+        }
         return "valid";
     }
 
@@ -405,6 +464,7 @@ public class CalcLib {
 
         // calculate fact
         while(list.findOperator('!', false)) {
+            //
             result = list.getFirstOperand();
             for(int i = (int)result - 1; i > 0; i--) {
                 result *= i;
@@ -422,8 +482,8 @@ public class CalcLib {
         // calculate root
         while(list.findOperator('|', false)) {
             boolean negativeIndex = false;
-            if(list.getFirstOperand() < 0){
-                //TODO invert the left operand
+            if(list.getFirstOperand() < 0) {
+                list.changeFirstOperand(-list.getFirstOperand());
                 negativeIndex = true;
             }
 
@@ -445,7 +505,8 @@ public class CalcLib {
 
         // Convert division to multiplication
         while(list.findOperator('/', false)) {
-            list.changeOperation('*', 1 / list.getSecondOperand());
+            list.changeOperator('*');
+            list.changeSecondOperand(1 / list.getSecondOperand());
         }
 
         // Calculate multiplication
@@ -457,7 +518,8 @@ public class CalcLib {
 
         // Convert minus sings to plus signs (negating the next operand)
         while(list.findOperator('-', false)) {
-            list.changeOperation('+', - list.getSecondOperand());
+            list.changeOperator('+');
+            list.changeSecondOperand(- list.getSecondOperand());
         }
 
         // Calculate plus
@@ -496,19 +558,20 @@ public class CalcLib {
         // Check if the input string is valid
         String validation = validate(list);
         if(!validation.equals("valid")) {
-            return validation;
+            throw new ArithmeticException("");
         }
 
         // Calculate the result using the doubly linked list
         calculate(list);
 
         if(!list.isRootOnly()) {
-            return "ERROR - could not compute";
+            throw new ArithmeticException("");
         }
         double result = list.getHeadNum();
 
         if(result > Math.pow(2, 52)) {
-            return Double.toString(result); // Return the number in an exponent format
+            return Double.toString(result);
+            // Return the number in an exponent format
         }
 
         // If the result is a natural number, return it as an integer

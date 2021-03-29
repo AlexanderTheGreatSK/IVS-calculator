@@ -352,13 +352,11 @@ public class Tests {
             assertThrows(ArithmeticException.class,
                     () -> CalcLib.main("sqrt(4, 2 + 2"));
             assertThrows(ArithmeticException.class,
-                    () -> CalcLib.main("1 + ,1"));
-            assertThrows(ArithmeticException.class,
-                    () -> CalcLib.main("1 + .1"));
-            assertThrows(ArithmeticException.class,
                     () -> CalcLib.main("1 +"));
             assertThrows(ArithmeticException.class,
                     () -> CalcLib.main("1 *"));
+            assertThrows(ArithmeticException.class,
+                    () -> CalcLib.main("* 1"));
             assertThrows(ArithmeticException.class,
                     () -> CalcLib.main("root()"));
             assertThrows(ArithmeticException.class,
