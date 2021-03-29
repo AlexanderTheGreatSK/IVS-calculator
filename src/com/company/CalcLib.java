@@ -1,13 +1,12 @@
 package com.company;
 
-import java.math.RoundingMode;
 import java.text.DecimalFormat;
 
 public class CalcLib {
 
     public static class DoublyLinkedList {
 
-        /*
+        /**
          * The Node class represents either an operator or a number.
          * If a Node is an operator, number = 0.0,
          * if a Node is a number, operator = '\0'.
@@ -27,7 +26,7 @@ public class CalcLib {
         Node head;
         Node currentOperatorNode;
 
-        /*
+        /**
          * Finds and returns the tail (last node).
          */
         private Node getTail() {
@@ -45,7 +44,7 @@ public class CalcLib {
             currentOperatorNode = head;
         }
 
-        /*
+        /**
          * Finds the first node (from head to tail) representing the given operator
          * and saves it into currentOperatorNode.
          * Returns true if given operator was found, or false if given operator was not present in the list.
@@ -66,7 +65,7 @@ public class CalcLib {
             return false;
         }
 
-        /*
+        /**
          * Finds a node previous of currentOperatorNode
          * and returns its number.
          * Returns 0 if the node is not found.
@@ -83,7 +82,7 @@ public class CalcLib {
 
 
 
-        /*
+        /**
          * Finds a node next of currentOperatorNode
          * and returns its number.
          * Returns 0 if the node is not found.
@@ -98,7 +97,7 @@ public class CalcLib {
             return currentOperatorNode.next.number;
         }
 
-        /*
+        /**
          * Writes the given number into the node previous of currentOperatorNode.
          * Deletes currentOperatorNode.
          * If isTwoOperandOperation is true, deletes the node next of currentOperatorNode as well.
@@ -118,7 +117,7 @@ public class CalcLib {
             return remove(currentOperatorNode);
         }
 
-        /*
+        /**
          * Changes the operator and number to given values.
          * Returns true if finished successfully, or false if nodes weren't found.
          */
@@ -134,7 +133,7 @@ public class CalcLib {
             return true;
         }
 
-        /*
+        /**
          * Returns the number in the head node.
          * Returns 0 if the list is empty.
          */
@@ -145,7 +144,7 @@ public class CalcLib {
             return head.number;
         }
 
-        /*
+        /**
          * Returns true if the list has only one node.
          * Returns false if the list is empty or has more than one node.
          */
@@ -156,7 +155,7 @@ public class CalcLib {
             return head.next == null;
         }
 
-        /*
+        /**
          * Removes the given node.
          * Returns true if finished successfully, or false if the node wasn't found.
          */
@@ -176,9 +175,8 @@ public class CalcLib {
             return true;
         }
 
-        /*
+        /**
          * Adds a node to the end of the list with given parameters.
-         *
          */
         public void append(char op, double num) {
             Node newNode = new Node(op, num);
@@ -195,7 +193,7 @@ public class CalcLib {
         }
     }
 
-    /*
+    /**
      * Prints the list
      */
     private static void testPrint(DoublyLinkedList list) {
@@ -209,31 +207,11 @@ public class CalcLib {
             tmp = tmp.next;
         }
     }
-    
-    /*
-    private static void test(String input){
-        DoublyLinkedList list = new DoublyLinkedList();
-        list.append('x', 1);
-        list.append('a', 0);
-        list.append('b', 0);
-        list.append('c', 0);
 
-        testPrint(list);
-        System.out.println("Remove b:");
-        list.remove(list.getHead().next.next);
-        testPrint(list);
-        System.out.println("Remove a:");
-        list.remove(list.getHead().next);
-        testPrint(list);
-        System.out.println("Remove c:");
-        list.remove(list.getHead().next);
-        testPrint(list);
-        System.out.println("Remove the input:");
-        list.remove(list.getHead());
-        testPrint(list);
-    }
-     */
-
+    /**
+    * Parses the input string into a doubly linked list
+    * (Each operand and operator is a single node)
+    */
     public static DoublyLinkedList parser(String input)
             throws ArithmeticException{
         DoublyLinkedList list = new DoublyLinkedList();
@@ -260,7 +238,6 @@ public class CalcLib {
             tmp = tmp.replace("pow(", "");
             tmp = tmp.replace(")", "");
             tmp = tmp.replace(",", "^");
-
             if(tmp.charAt(0) == '-'){
                 tmp = tmp.replace('-', '~');
             }
@@ -328,6 +305,10 @@ public class CalcLib {
         return Math.round(num) == num;
     }
 
+    /**
+     * Checks the parsed input for invalid operations, forbidden characters
+     * and so on.
+     */
     public static String validate(DoublyLinkedList list)
             throws ArithmeticException{
         // invalid factorial input
@@ -373,15 +354,12 @@ public class CalcLib {
         return "valid";
     }
 
-    /*
-    public static void writeTwoOperandOperation(char operator,
-            double num, DoublyLinkedList list) {
-        list.findOperator(operator).prev.number = num;
-        list.remove(list.findOperator(operator).next);
-        list.remove(list.findOperator(operator));
-    }
+    /**
+    * Searches the doubly linked list for operations with the highest
+    * precedence, calculates the result of the operation, continues with
+    * operations with lower precedence and finishes if there is only one item
+    * in the linked list - the result of the calculation.
     */
-
     public static void calculate(DoublyLinkedList list){
         double result;
 
@@ -440,16 +418,14 @@ public class CalcLib {
         }
     }
 
-    public static String rmFloatingPointIfInt(String input){
-        double doubleNum = Double.parseDouble(input);
-        long longNum = (long)doubleNum;
-        if(doubleNum - longNum != 0) {
-            return input;
-        }
-        return Long.toString(longNum);
-    }
 
-
+    /**
+     * Takes a string in which is the desired calculation, parses it into a
+     * doubly linked list, checks if the input is valid, calculates the result,
+     * converts the result to exponential format if needed and truncates the
+     * floating point digits to 8 if needed and finally, returns the result
+     * as a string.
+     */
     public static String main(String input) {
 
         // If the string is empty
@@ -460,14 +436,7 @@ public class CalcLib {
         // Parse the input string into a doubly linked list
         DoublyLinkedList list = parser(input);
 
-        testPrint(list);
-
-        // Check if the input string was successfully parsed
-        /*
-        if(list == null){
-            return "BAD";
-        }
-        */
+        //testPrint(list);
 
         // Check if the input string is valid
         String validation = validate(list);
