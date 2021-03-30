@@ -1,5 +1,5 @@
 /*
- * cool hlavicka
+ * cool hlavicka TODO
  */
 
 package com.company;
@@ -7,19 +7,50 @@ package com.company;
 import java.text.DecimalFormat;
 
 
+/**
+ * Library for the calculator - main method takes a string representing
+ * the expression to calculate, parses it into a doubly linked list
+ * (one node represents one operand or one operator), calculates the result
+ * (one by one finds an operator, takes it's operands, writes the result
+ * of the operation to one of the nodes and removes the rest. This is repeated
+ * until there is only one node left: the final result) and returns the result
+ * as a string.
+ * <p>
+ * This class involves implementation of a doubly linked list and many methods
+ * allowing us to work with it.
+ */
 public class CalcLib {
 
+    // Operators the library is able to work with:
+    // Plus, minus, multiply, divide, factorial, modulo, power, root
     private static final String operatorsList = "+-*/!%^|";
 
     /**
-     * neco chytryho k listu
+     * Implementation of a doubly linked list.
+     * <p>
+     * The list consists of interconnected nodes (the first one is the 'head'
+     * and the last one is the 'tail'). Each node points to a previous one as
+     * well as the next one. Each node also contains a character variable
+     * (this is where to character representing an operation is stored) and
+     * a number (double data type). If the node represents a number, the
+     * character is '\0' (null byte).
+     * <p>
+     * The class contains methods for appending a new node, removing an
+     * existing one, finding a node, changing its contents and few more.
      */
     public static class DoublyLinkedList {
 
         /**
-         * The Node class represents either an operator or a number.
-         * If a Node is an operator, number = 0.0,
-         * if a Node is a number, operator = '\0'.
+         * A single node represents either an operator or a number.
+         * <p>
+         * If a node is an operator, number variable (double data type) equals
+         * 0.0, and the operator variable (char data type) contains a character
+         * representing the operation.
+         * If a node is a number, operator variable contains '\0' and,
+         * naturally, the number variable contains the number itself.
+         * <p>
+         * Involves a constructor that requires two parameters:
+         * character and a number - both of these are then written to the node.
          */
         private static class Node {
             char operator;
@@ -27,19 +58,34 @@ public class CalcLib {
             Node prev;
             Node next;
 
+            /**
+             * Constructor of a single node.
+             *
+             * @param inputChar  If the node is to be an operator, inputChar
+             *                   should contain a character representing the
+             *                   mathematical operation. It should contain
+             *                   null byte ('\0') otherwise.
+             * @param inputNum  If the node is to be a number, inputNum should
+             *                  be equal to the number the node is to
+             *                  represent. It should be equal to 0.0 otherwise.
+             */
             Node(char inputChar, double inputNum) {
                 operator = inputChar;
                 number = inputNum;
             }
         }
 
+        // Always the first node in the list
         Node head;
+
+        // To optimize working with the list, this node is always the one
+        // that was last worked with
         Node currentOperatorNode;
 
         /**
-         * Finds and the tail
+         * Finds and returns the tail of the doubly linked list.
          *
-         * @return tail node
+         * @return the tail node.
          */
         private Node getTail() {
             Node node = head;
@@ -53,7 +99,7 @@ public class CalcLib {
         }
 
         /**
-         * Sets currentOperatorNode to the head of the list
+         * Sets currentOperatorNode to the head of the list.
          */
         public void resetCurrentNode() {
             currentOperatorNode = head;
@@ -64,7 +110,7 @@ public class CalcLib {
          * operator and saves it into currentOperatorNode.
          *
          * @param op  a character representing the operation we are searching
-         *            for
+         *            for.
          * @param nextNotFirst  If false, it will save the position of the
          *                      first matching operator it finds.
          *                      If true, it will save the position of the
@@ -91,9 +137,10 @@ public class CalcLib {
         }
 
         /**
-         * Finds a node previous of currentOperatorNode
+         * Finds a node previous of currentOperatorNode.
          *
-         * @return  number of the node previous to currentOperatorNode
+         * @return a number that the node previous to currentOperatorNode
+         *         contains.
          * @throws ArithmeticException if the node is not found.
          */
         public double getFirstOperand()
@@ -108,9 +155,10 @@ public class CalcLib {
         }
 
         /**
-         * Finds a node next of currentOperatorNode
+         * Finds a node next of currentOperatorNode.
          *
-         * @return  number of the node next to currentOperatorNode
+         * @return a number that the node after the currentOperatorNode
+         *         contains.
          * @throws ArithmeticException if the node is not found.
          */
         public double getSecondOperand()
@@ -127,7 +175,7 @@ public class CalcLib {
         /**
          * Writes the given number into the node previous to the
          * currentOperatorNode while deleting currentOperatorNode.
-         * If isTwoOperandOperation is true, also deletes the node next of
+         * If isTwoOperandOperation is true, also deletes the node after the
          * currentOperatorNode.
          *
          * @param num  number to be written to the previous node.
@@ -144,10 +192,11 @@ public class CalcLib {
         }
 
         /**
-         * Changes the first operand (number of the node previous of currentOperatorNode) of the current node
-         * to the given number.
+         * Changes the first (left) operand
+         * (number of the node previous to the currentOperatorNode)
+         * of the current node to a given number.
          *
-         * @param newOperand  new first operand
+         * @param newOperand  new first (left) operand.
          */
         public void changeFirstOperand(double newOperand) {
             currentOperatorNode.prev.number = newOperand;
@@ -155,33 +204,34 @@ public class CalcLib {
 
         /**
          * Changes the operator of the current node
-         * to the given character representing an operation.
+         * to the given character representing a new operation.
          *
-         * @param newOp  new operator
+         * @param newOp  new operator.
          */
         public void changeOperator(char newOp) {
             currentOperatorNode.operator = newOp;
         }
 
         /**
-         * Changes the second operand (number of the node next of currentOperatorNode) of the current node
-         * to the given number.
+         * Changes the second (right) operand
+         * (number of the node after the currentOperatorNode)
+         * of the current node to a given number.
          *
-         * @param newOperand  new second operand
+         * @param newOperand  new second (right) operand.
          */
         public void changeSecondOperand(double newOperand) {
             currentOperatorNode.next.number = newOperand;
         }
 
         /**
-         * @return the the first number of the linked list.
+         * @return the number of the first node of the doubly linked list.
          */
         public double getHeadNum() {
             return head.number;
         }
 
         /**
-         * @return true if the list has only one node, false otherwise.
+         * @return true if the list only contains one node, false otherwise.
          */
         public boolean isRootOnly() {
             if(head == null){
@@ -191,7 +241,7 @@ public class CalcLib {
         }
 
         /**
-         * @return true if the next node is an operator, false if it's a number
+         * @return true if the next node is an operator, false if it's a number.
          */
         public boolean isNextNodeAnOperator() {
             if(currentOperatorNode.next == null) {
@@ -201,9 +251,9 @@ public class CalcLib {
         }
 
         /**
-         * Removes the given node.
+         * Removes a given node from the list.
          *
-         * @param toRemove  node that is supposed to be removed
+         * @param toRemove  node that is supposed to be removed.
          */
         private void remove(Node toRemove) {
             if (toRemove == null || head == null) {
@@ -221,11 +271,11 @@ public class CalcLib {
         }
 
         /**
-         * Appends a node to the list with given operation or number.
+         * Appends a node to the list with a given operation and a given number.
          *
-         * @param op  a character representing the operation supposed to be
-         *            appended
-         * @param num  a number supposed to be appended
+         * @param op  a character representing a operation the node to append
+         *            should contain.
+         * @param num  a number the node to append should contain.
          */
         public void append(char op, double num) {
             Node newNode = new Node(op, num);
@@ -243,23 +293,23 @@ public class CalcLib {
     }
 
     /**
-     * Parses the input string into a doubly linked list - each operand and
+     * Parses the input string into a doubly linked list - each operand or
      * operator is a single node.
-     *
+     * <p>
      * Before appending operands and operators to the list, removes all white
      * characters, converts mod to '%, pow to '^', root to '|'
      * and replaces ',' with '.'.
      *
-     * @param input  a string containing exactly what the user entered
-     * @return list  The doubly linked list containing all operations and
-     *               operands
-     * @throws ArithmeticException if it fails to parse the input
+     * @param input  a string containing exactly what the user entered.
+     * @return the doubly linked list containing all operations and
+     *               operands.
+     * @throws ArithmeticException if it fails to parse the input.
      */
     public static DoublyLinkedList parser(String input)
             throws ArithmeticException{
         DoublyLinkedList list = new DoublyLinkedList();
 
-        // Removes all whitespaces and non-visible characters
+        // Remove all white characters
         input = input.replaceAll("\\s+","");
 
         // Replace all "mod" with '%'
@@ -312,7 +362,7 @@ public class CalcLib {
             if(tmp.charAt(0) == '-'){
                 tmp = tmp.replace('-', '~');
             }
-            if(tmp.charAt(tmp.indexOf('^') + 1) == '-'){
+            if(tmp.charAt(tmp.indexOf('|') + 1) == '-'){
                 tmp = tmp.replace('-', '~');
             }
             input = input.replace(orig, tmp);
@@ -321,7 +371,7 @@ public class CalcLib {
         // Replace all commas with dots
         input = input.replaceAll(",", ".");
 
-        // Fill list with operators and numbers
+        // Fill list with given operators and numbers
         String temp = "";
         int len = input.length();
         char ch = '0';
@@ -340,7 +390,7 @@ public class CalcLib {
                 temp = "";
             }
             if(operatorsList.indexOf(ch) == -1) {
-                throw new ArithmeticException("Invalid character inserted");
+                throw new ArithmeticException("Invalid character inserted.");
             }
             list.append(ch, 0);
         }
@@ -353,33 +403,34 @@ public class CalcLib {
     /**
      * Checks if a number is natural (whole) or not.
      *
-     * @param num  A double precision number
-     * @return true if the number is natural, false if it is not
+     * @param num  A double precision number.
+     * @return true if the number is natural, false if it is not.
      */
     public static boolean isNatural(double num){
         return Math.round(num) == num;
     }
 
     /**
-     * Checks the parsed input for invalid operations, forbidden characters
-     * and so on.
+     * Checks the parsed input for invalid operations, forbidden characters,
+     * malformed expressions and so on.
      *
      * @param list  The doubly linked list containing all operations and
-     *              operands
-     * @throws ArithmeticException if the input is invalid
+     *              operands.
+     * @throws ArithmeticException if the input is invalid.
      */
     public static void validate(DoublyLinkedList list)
             throws ArithmeticException{
-        // invalid factorial input
+
+        // Factorial - the operand is not a natural number
         list.resetCurrentNode();
         while(list.findOperator('!', true)) {
             if(!isNatural(list.getFirstOperand())){
                 throw new ArithmeticException(
-                        "The factorial argument is not a natural number");
+                        "The factorial argument is not a natural number.");
             }
         }
 
-        // modulo natural number
+        // Modulo - the divisor is not a natural number
         list.resetCurrentNode();
         while(list.findOperator('%', true)) {
             if(!isNatural(list.getSecondOperand())){
@@ -388,7 +439,7 @@ public class CalcLib {
             }
         }
 
-        // division by zero
+        // Division - division by zero is undefined
         list.resetCurrentNode();
         while(list.findOperator('/', true)) {
             if(list.getSecondOperand() == 0){
@@ -396,7 +447,7 @@ public class CalcLib {
             }
         }
 
-        // root problems
+        // Root exception
         list.resetCurrentNode();
         while(list.findOperator('|', true)) {
             if(list.getSecondOperand()%2 == 0 && list.getFirstOperand() < 0) {
@@ -407,20 +458,21 @@ public class CalcLib {
             }
             if(Math.round(list.getSecondOperand()) != list.getSecondOperand()){
                 throw new ArithmeticException(
-                        "The root index is not a whole number");
+                        "The root index is not a whole number.");
             }
         }
 
-        // power problems
+        // Power exceptions
         list.resetCurrentNode();
         while(list.findOperator('^', true)) {
             if(Math.round(list.getSecondOperand()) != list.getSecondOperand()){
                 throw new ArithmeticException(
-                        "The exponent of power is not a whole number");
+                        "The exponent of power is not a whole number.");
             }
         }
 
-        // two operators without a number separating them
+        // Other - Two operators without a number separating them is only
+        // allowed after the factorial operator
         list.resetCurrentNode();
         char op;
         for(int i = 0; i < operatorsList.length(); i++) {
@@ -431,7 +483,7 @@ public class CalcLib {
             while(list.findOperator(op, true)) {
                 if(list.isNextNodeAnOperator()){
                     throw new ArithmeticException("There are two operators " +
-                            "between which there is no operand");
+                            "between which there is no operand.");
                 }
             }
         }
@@ -443,23 +495,22 @@ public class CalcLib {
      * nodes (operand(s) and the operation) with the result, then continues with
      * operations with lower precedence and ends if there is only one item
      * left in the linked list - the result of the calculation.
-     *
+     * <p>
      * Precedence: factorial > power > root > modulo >
      * division and multiplication > subtraction and addition
-     *
+     * <p>
      * For easier implementation, every division is converted to multiplication
      * (2/2 -> 2 * 1/2) and subtraction to addition (2-2 -> 2 + -2) before
      * the calculation.
      *
      * @param list  The doubly linked list containing all operations and
-     *              operands
+     *              operands.
      */
     public static void calculate(DoublyLinkedList list){
         double result;
 
-        // calculate fact
+        // Factorial
         while(list.findOperator('!', false)) {
-            //
             result = list.getFirstOperand();
             for(int i = (int)result - 1; i > 0; i--) {
                 result *= i;
@@ -467,14 +518,14 @@ public class CalcLib {
             list.writeInResult(result, false);
         }
 
-        // calculate power
+        // Power
         while(list.findOperator('^', false)) {
             result = Math.pow(list.getFirstOperand(),
                     list.getSecondOperand());
             list.writeInResult(result, true);
         }
 
-        // calculate root
+        // Root
         while(list.findOperator('|', false)) {
             boolean negativeIndex = false;
             if(list.getFirstOperand() < 0) {
@@ -489,7 +540,7 @@ public class CalcLib {
             list.writeInResult(result, true);
         }
 
-        // Calculate modulo
+        // Modulo
         while(list.findOperator('%', false)) {
             result = list.getFirstOperand() %
                     list.getSecondOperand();
@@ -502,7 +553,7 @@ public class CalcLib {
             list.changeSecondOperand(1 / list.getSecondOperand());
         }
 
-        // Calculate multiplication
+        // Multiplication
         while(list.findOperator('*', false)) {
             result = list.getFirstOperand() *
                     list.getSecondOperand();
@@ -515,7 +566,7 @@ public class CalcLib {
             list.changeSecondOperand(- list.getSecondOperand());
         }
 
-        // Calculate plus
+        // Addition
         while(list.findOperator('+', false)) {
             result = list.getFirstOperand() +
                     list.getSecondOperand();
@@ -530,16 +581,16 @@ public class CalcLib {
      * format and finally, returns it as a string.
      *
      * @param input  a string containing exactly what the user entered
-     * @return result  a string containing the result of the calculation -
-     *                 a single number in decimal form with a maximum of 8
-     *                 floating point digits (or exponential form if the
-     *                 number is bigger than 2^52)
-     * @throws ArithmeticException if the input is not computable
+     * @return result - a string containing the result of the calculation -
+     *         a single number in decimal form with a maximum of 8 floating
+     *         point digits (or exponential form if the number is bigger
+     *         than 2^52).
+     * @throws ArithmeticException if the input is not computable.
      */
     public static String main(String input)
             throws ArithmeticException{
 
-        // If the string is empty
+        // If the string is empty, simply return an empty string
         if(input.equals("")){
             return "";
         }
@@ -550,22 +601,28 @@ public class CalcLib {
         // Check if the input string is valid
         validate(list);
 
-        // Calculate the result using the doubly linked list
+        // Calculate the result of the input
         calculate(list);
 
+        // If after the calculation there were more multiple nodes or not
+        // a single one, something definitely went wrong
         if(!list.isRootOnly()) {
             throw new ArithmeticException(
                     "Could not compute the entered expression.");
         }
 
+        // The result equals the number of the only node remaining
         double result = list.getHeadNum();
 
+        // If the number is bigger than range of a double data type, the
+        // result should be in an exponential format
+        // 'x*10^n', or, better: 'xEn'
         if(result > Math.pow(2, 52)) {
             return Double.toString(result);
-            // Return the number in an exponent format
         }
 
         // If the result is a natural number, return it as an integer
+        // (the floating point digits are unnecessary)
         if(isNatural(result)) {
             long newRes = Math.round(result);
             return Long.toString(newRes);
@@ -574,7 +631,6 @@ public class CalcLib {
         // Truncate the result to 8 decimal places and return
         String pattern = "#.########";
         DecimalFormat df = new DecimalFormat(pattern);
-
         return df.format(result);
     }
 }
