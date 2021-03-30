@@ -1,11 +1,14 @@
-/*
- * cool hlavicka TODO
- */
-
-package com.company;
-
-import java.text.DecimalFormat;
-
+/******************************************************************************
+ * Name: CalcLib.java
+ * Package: com.company
+ *
+ * Call main, pass a string containing the expression to calculate as
+ * a parameter and get a string containing the result (in integer, fixed point
+ * or an exponential form) in return.
+ *
+ * Authors: Patrik Skaloš (xskalo01)
+ *          Jiřina Frýbortová (xfybo01)
+ *****************************************************************************/
 
 /**
  * Library for the calculator - main method takes a string representing
@@ -18,7 +21,16 @@ import java.text.DecimalFormat;
  * <p>
  * This class involves implementation of a doubly linked list and many methods
  * allowing us to work with it.
+ *
+ * @autor xskalo01
+ * @autor xfrybo01
+ * @version 1.0
  */
+
+package com.company;
+import java.text.DecimalFormat;
+
+
 public class CalcLib {
 
     // Operators the library is able to work with:
