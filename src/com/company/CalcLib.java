@@ -62,7 +62,7 @@ public class CalcLib {
          * naturally, the number variable contains the number itself.
          * <p>
          * Involves a constructor that requires two parameters:
-         * character and a number - both of these are then written to the node.
+         * a character and a number - both of these are then written to the node.
          */
         private static class Node {
             char operator;
@@ -436,7 +436,7 @@ public class CalcLib {
         // Factorial - the operand is not a natural number
         list.resetCurrentNode();
         while(list.findOperator('!', true)) {
-            if(!isNatural(list.getFirstOperand())){
+            if(!isNatural(list.getFirstOperand())) {
                 throw new ArithmeticException(
                         "The factorial argument is not a natural number.");
             }
@@ -454,7 +454,7 @@ public class CalcLib {
         // Division - division by zero is undefined
         list.resetCurrentNode();
         while(list.findOperator('/', true)) {
-            if(list.getSecondOperand() == 0){
+            if(list.getSecondOperand() == 0) {
                 throw new ArithmeticException("Division by zero.");
             }
         }
@@ -465,10 +465,10 @@ public class CalcLib {
             if(list.getSecondOperand()%2 == 0 && list.getFirstOperand() < 0) {
                 throw new ArithmeticException("Even root of a negative number.");
             }
-            if(list.getSecondOperand() == 0){
+            if(list.getSecondOperand() == 0) {
                 throw new ArithmeticException("The root index is zero.");
             }
-            if(Math.round(list.getSecondOperand()) != list.getSecondOperand()){
+            if(Math.round(list.getSecondOperand()) != list.getSecondOperand()) {
                 throw new ArithmeticException(
                         "The root index is not a whole number.");
             }
@@ -477,7 +477,7 @@ public class CalcLib {
         // Power exceptions
         list.resetCurrentNode();
         while(list.findOperator('^', true)) {
-            if(Math.round(list.getSecondOperand()) != list.getSecondOperand()){
+            if(Math.round(list.getSecondOperand()) != list.getSecondOperand()) {
                 throw new ArithmeticException(
                         "The exponent of power is not a whole number.");
             }
@@ -489,7 +489,7 @@ public class CalcLib {
         char op;
         for(int i = 0; i < operatorsList.length(); i++) {
             op = operatorsList.charAt(i);
-            if(op == '!'){
+            if(op == '!') {
                 continue;
             }
             while(list.findOperator(op, true)) {
@@ -518,7 +518,7 @@ public class CalcLib {
      * @param list  The doubly linked list containing all operations and
      *              operands.
      */
-    public static void calculate(DoublyLinkedList list){
+    public static void calculate(DoublyLinkedList list) {
         double result;
 
         // Factorial
@@ -546,7 +546,7 @@ public class CalcLib {
             }
             result = Math.pow(list.getFirstOperand(),
                     1.0f/list.getSecondOperand());
-            if(negativeIndex){
+            if(negativeIndex) {
                 result = -result;
             }
             list.writeInResult(result, true);
@@ -589,7 +589,7 @@ public class CalcLib {
 
     /**
      * Parses the input string into a doubly linked list, checks if the input
-     * is valid, calculates the result, converts it to a string in desired
+     * is valid, calculates the result, converts it to a string in a suitable
      * format and finally, returns it as a string.
      *
      * @param input  a string containing exactly what the user entered
@@ -603,7 +603,7 @@ public class CalcLib {
             throws ArithmeticException{
 
         // If the string is empty, simply return an empty string
-        if(input.equals("")){
+        if(input.equals("")) {
             return "";
         }
 
