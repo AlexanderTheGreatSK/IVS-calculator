@@ -24,6 +24,7 @@ test: all #Returns 1 if a test fails
 	-java -jar $(TESTJARS) -cp $(BUILDDIR) --scan-classpath 
 
 profile: all #TODO
+	-java -jar $(TESTJARS) -cp $(BUILDDIR) --scan-classpath 
 	#Not implemented yet
 
 doc: #TODO
