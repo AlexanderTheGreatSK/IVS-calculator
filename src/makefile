@@ -24,8 +24,7 @@ all: #TODO ADD GUI CLASS + PROFILING PROGRAM
 test: all #Returns 1 if a test fails
 	-java -jar $(TESTJARS) -cp $(BUILDDIR) --scan-classpath 
 
-profile: all #TODO
-	#javac $(PROFILECLASS) $(MAINCLASS) $(LIBCLASS) -d $(BUILDDIR)
+profile: all
 	javac $(PROFILECLASS) $(MAINCLASS) $(LIBCLASS) -d $(BUILDDIR)
 
 doc: #TODO
