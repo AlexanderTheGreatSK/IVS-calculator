@@ -6,6 +6,7 @@
 \usepackage{listings}
 
 \graphicspath{{img}}
+\pagenumbering{gobble}
 
 \title{\vspace{4cm}\Huge{Profiling the calculator} \\ \vspace{1cm} \LARGE{Results report}\vfill}
 \author{Patrik Skaloš, xskalo01 \vspace{5cm}}
@@ -14,7 +15,9 @@
 \begin{document}
 
   \begin{landscape}
-    \maketitle
+    \begin{titlepage}
+      \maketitle
+    \end{titlepage}
   \end{landscape}
 
 
@@ -123,19 +126,17 @@
     \newpage
 
     \begin{center}
-    \LARGE{Conclusion}
+    \large{Conclusion}
     \end{center}
 
     \bigskip
 
-    \Large{Methods of the \texttt{CalcLib} class to optimise sorted by importance:}
-    \large
+    \normalsize{Methods of the \texttt{CalcLib} class to optimise sorted by importance:}
     \begin{itemize}
       \item \texttt{getTail}
       \item \texttt{parser}
       \item \texttt{main}
       \item \texttt{findOperator}
-
     \end{itemize}
 
 \end{document}
