@@ -25,8 +25,8 @@ test: all #Returns 1 if a test fails
 	-java -jar $(TESTJARS) -cp $(BUILDDIR) --scan-classpath 
 
 profile: all #TODO
+	#javac $(PROFILECLASS) $(MAINCLASS) $(LIBCLASS) -d $(BUILDDIR)
 	javac $(PROFILECLASS) $(MAINCLASS) $(LIBCLASS) -d $(BUILDDIR)
-	#Not implemented yet
 
 doc: #TODO
 	#Not implemented yet
