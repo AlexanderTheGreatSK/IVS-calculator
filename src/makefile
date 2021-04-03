@@ -8,6 +8,7 @@ TESTJARS = ../lib/junit-platform-console-standalone-1.7.1.jar
 MAINCLASS = com/company/Main.java
 LIBCLASS = com/company/CalcLib.java
 TESTCLASS = tests/Tests.java
+PROFILECLASS = profiling/Profile.java
 
 JC = javac -cp $(COMPILEJARS)
 
@@ -24,7 +25,7 @@ test: all #Returns 1 if a test fails
 	-java -jar $(TESTJARS) -cp $(BUILDDIR) --scan-classpath 
 
 profile: all #TODO
-	-java -jar $(TESTJARS) -cp $(BUILDDIR) --scan-classpath 
+	javac $(PROFILECLASS) $(MAINCLASS) $(LIBCLASS) -d $(BUILDDIR)
 	#Not implemented yet
 
 doc: #TODO
