@@ -2,5 +2,9 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/lib/jvmtop" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/lib/jvmtop1" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/lib/visualvm" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/lib/visualvm/visualvm/build/nb/netbeans" vcs="Git" />
   </component>
 </project>
