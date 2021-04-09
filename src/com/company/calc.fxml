@@ -88,8 +88,8 @@
          <top>
              <MenuBar prefHeight="16.0" prefWidth="286.0" BorderPane.alignment="CENTER">
                  <Menu mnemonicParsing="false" text="Help">
-                     <MenuItem mnemonicParsing="false" text="User guide"/>
-                     <MenuItem mnemonicParsing="false" text="About"/>
+                     <MenuItem mnemonicParsing="false" text="User guide" onAction="#helpBtn"/>
+                     <MenuItem mnemonicParsing="false" text="About" onAction="#aboutBtn"/>
                  </Menu>
              </MenuBar>
          </top>

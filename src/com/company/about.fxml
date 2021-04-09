@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane prefHeight="400.0" prefWidth="327.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.company.Controller">
+   <children>
+      <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="63.0" layoutY="24.0" pickOnBounds="true" preserveRatio="true" fx:id="imageView"/>
+      <TextArea layoutX="14.0" layoutY="186.0" prefHeight="200.0" prefWidth="297.0" />
+   </children>
+</AnchorPane>
