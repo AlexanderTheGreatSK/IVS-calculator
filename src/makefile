@@ -1,37 +1,60 @@
+#Where the compiled files will be stored
 BUILDDIR = ../build
+
+#How will the compressed project be called
 ZIPNAME = xkovac59_xokruc00_xskalo01_xfrybo01.zip
+
+#What to remove when cleaning
 CLEANLIST = ../build ../out
 
-COMPILEJARS = ../lib/junit-jupiter-api-5.4.2.jar:../lib/apiguardian-api-1.0.0.jar
+
+#Classpaths for compiling
+MAINCP = ../lib/javaFX/javafx.controls:../lib/javaFX/javafx.fxml:../lib/javaFX/jfxrt.jar
+TESTSCP = ../lib/junit-jupiter-api-5.4.2.jar:../lib/apiguardian-api-1.0.0.jar
+
+#Jar file needed to run tests in terminal
 TESTJARS = ../lib/junit-platform-console-standalone-1.7.1.jar
 
+#Modules (javaFX) needed to compile the app
+JAVAFXPATH = ../lib/javaFX/
+JAVAFXMODULES = javafx.controls,javafx.fxml
+
+#Classes
 MAINCLASS = com/company/Main.java
 LIBCLASS = com/company/CalcLib.java
+CONTROLLERCLASS = com/company/Controller.java
 TESTCLASS = tests/Tests.java
 PROFILECLASS = profiling/Profile.java
 
-JC = javac -cp $(COMPILEJARS)
 
-DEBUG = -g
+DEBUG = #-g  #Uncomment to enable compiling with -g and vice versa
+
 
 
 default: all
 
-all: profile #TODO GUI CLASS
-	$(JC) $(MAINCLASS) $(LIBCLASS) -d $(BUILDDIR) $(DEBUG)
-	$(JC) $(LIBCLASS) $(TESTCLASS) -d $(BUILDDIR)
+all: tests profile
+	#Compile main class with the library and controller
+	javac $(MAINCLASS) $(LIBCLASS) $(CONTROLLERCLASS) -cp $(MAINCP) -p $(JAVAFXPATH) --add-modules $(JAVAFXMODULES) -d $(BUILDDIR) $(DEBUG) 
+	cp com/company/calc.fxml ../build/com/company/
+	cp com/company/logo.png ../build/com/company/
 
-profile: all
-	javac $(PROFILECLASS) $(MAINCLASS) $(LIBCLASS) -d $(BUILDDIR)
+tests:
+	#Compile tests along with the library
+	javac $(TESTCLASS) $(LIBCLASS) -cp $(TESTSCP) -d $(BUILDDIR)
+
+profile: 
+	#Compile the profiling app
+	javac $(PROFILECLASS) $(LIBCLASS) -d $(BUILDDIR)
 
 doc: #TODO
 	#Not implemented yet
 
+run: all
+	cd ../build/ && java --module-path ../lib/javaFX --add-modules javafx.controls,javafx.fxml com.company.Main
+
 test: all #Returns 1 if at least one test fails
 	-java -jar $(TESTJARS) -cp $(BUILDDIR) --scan-classpath 
-
-run: all #TODO
-	#Not implemented yet
 
 clean:
 	rm -rf $(CLEANLIST)
