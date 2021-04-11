@@ -15,20 +15,20 @@ JC = javac -cp $(COMPILEJARS)
 DEBUG = -g
 
 
-DEFAULT: all
+default: all
 
-all: #TODO ADD GUI CLASS + PROFILING PROGRAM
+all: profile #TODO GUI CLASS
 	$(JC) $(MAINCLASS) $(LIBCLASS) -d $(BUILDDIR) $(DEBUG)
 	$(JC) $(LIBCLASS) $(TESTCLASS) -d $(BUILDDIR)
-
-test: all #Returns 1 if a test fails
-	-java -jar $(TESTJARS) -cp $(BUILDDIR) --scan-classpath 
 
 profile: all
 	javac $(PROFILECLASS) $(MAINCLASS) $(LIBCLASS) -d $(BUILDDIR)
 
 doc: #TODO
 	#Not implemented yet
+
+test: all #Returns 1 if at least one test fails
+	-java -jar $(TESTJARS) -cp $(BUILDDIR) --scan-classpath 
 
 run: all #TODO
 	#Not implemented yet
