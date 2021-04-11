@@ -2,7 +2,7 @@
 BUILDDIR = ../build
 
 #How will the compressed project be called
-ZIPNAME = xkovac59_xokruc00_xskalo01_xfrybo01.zip
+PROJNAME = xkovac59_xokruc00_xskalo01_xfrybo01
 
 #What to remove when cleaning
 CLEANLIST = ../build ../out
@@ -59,5 +59,23 @@ test: all #Returns 1 if at least one test fails
 clean:
 	rm -rf $(CLEANLIST)
 	
-pack: clean
-	cd ../../ && zip -r $(ZIPNAME) ./doc/ ./install/ ./repo/
+pack: clean #To make sense of what is happening, read the echo messages...
+	cd ../../ && \
+	echo "Create a folder named after xlogins, copy data there and enter" && \
+	mkdir -p $(PROJNAME) && \
+	cp -r doc install $(PROJNAME) && \
+	echo "Meanwhile, the repository is renamed to 'repo'" && \
+	cp -r ./IVS-calculator/ ./$(PROJNAME)/repo/ && \
+	cd ./$(PROJNAME)/repo/ && \
+	echo "In repo/profiling remove everything except the .pdf and .csv files" && \
+	rm -rf ./profiling/profile_command ./profiling/output/** ./profiling/report && \
+	mv ./profiling/data/csv/** ./profiling/output/ && \
+	rm -rf ./profiling/data && \
+	echo "Go back above the repo directory, zip everything needed and remove the repo dir" && \
+	cd ../../ && \
+	zip -r $(PROJNAME).zip $(PROJNAME) && \
+	:
+	#rm -rf $(PROJNAME)
+	
+
+
