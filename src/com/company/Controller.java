@@ -1,33 +1,23 @@
 package com.company;
 
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
-import javafx.scene.Node;
-import javafx.scene.Parent;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.net.URL;
-import java.util.Objects;
-import java.util.ResourceBundle;
 
-public class Controller implements Initializable {
+public class Controller {
 
 
     String textToShow = "Enter your input using your keyboard or the on-screen keyboard. Press Enter or the \"=\" button when you're done. \n" +
@@ -75,7 +65,7 @@ public class Controller implements Initializable {
             case "=":
                 String finalValue = display.getText();
                 display.setText(display.getText() + "=");
-
+                //funkcia
                 System.out.println("FinalValue: " + finalValue);
 
                 break;
@@ -88,32 +78,53 @@ public class Controller implements Initializable {
         @FXML
         public void aboutBtn (ActionEvent event) {
             Stage stage = new Stage();
-            String authors = "";
+            String authors = "Jiřina Frýbortová (xfrybo01)\n" + "Jana Kováčiková (xkovac59)\n" + "Patrik Skaloš (xskalo01)\n" + "Alexander Okrucký (xokruc00)";
+            String license = "This project is licensed under the GNU GPL v.2 License.";
+            String team = "My dve a my dvaja";
+            String name = "UNI(x)calc";
 
+                Image image = new Image(Main.class.getResourceAsStream("logo.png"));
+                ImageView imageView = new ImageView(image);
+                imageView.setFitHeight(100);
+                imageView.setFitWidth(100);
 
-            Text text3 = new Text(textToShow);
-            text3.setWrappingWidth(450);
+                Text nameText = new Text(name);
+                nameText.setTextAlignment(TextAlignment.CENTER);
+                nameText.setFont(Font.font("",FontWeight.BOLD, 25));
 
-            HBox root = new HBox();
-            root.getChildren().addAll(text3);
-            root.setSpacing(20);
+                Text teamText = new Text(team);
+                teamText.setTextAlignment(TextAlignment.CENTER);
 
-            root.setStyle("-fx-padding: 10;" +
-                    "-fx-border-style: solid inside;" +
-                    "-fx-border-width: 2;" +
-                    "-fx-border-insets: 5;" +
-                    "-fx-border-radius: 5;" +
-                    "-fx-border-color: blue;");
+                Text authorsText = new Text(authors);
+                teamText.setWrappingWidth(100);
+                nameText.setFont(Font.font("",FontWeight.BOLD, 20));
 
-            Scene scene = new Scene(root, 450, 450);
-            stage.setScene(scene);
-            stage.setTitle("User Guide");
-            stage.setMinWidth(500);
-            stage.setMinHeight(300);
-            stage.setMaxWidth(500);
-            stage.setMaxHeight(300);
+                Text licenseText = new Text(license);
+                teamText.setWrappingWidth(50);
 
-            stage.show();
+                VBox root = new VBox();
+                root.getChildren().addAll(imageView, nameText, teamText, authorsText, licenseText);
+                root.setSpacing(10);
+                root.setAlignment(Pos.CENTER);
+
+                root.setStyle("-fx-padding: 10;" +
+                        "-fx-border-style: solid inside;" +
+                        "-fx-border-width: 2;" +
+                        "-fx-border-insets: 5;" +
+                        "-fx-border-radius: 5;" +
+                        "-fx-border-color: blue;");
+
+                Scene scene = new Scene(root, 400, 400);
+                stage.getIcons().add(new Image(Main.class.getResourceAsStream("logo.png")));
+                stage.setScene(scene);
+                stage.setTitle("About");
+                stage.setMinWidth(400);
+                stage.setMinHeight(400);
+                stage.setMaxWidth(400);
+                stage.setMaxHeight(400);
+
+                stage.show();
+
         }
 
     @FXML
@@ -129,6 +140,7 @@ public class Controller implements Initializable {
 
         Text text3 = new Text(textToShow);
         text3.setWrappingWidth(450);
+        text3.setFont(Font.font("", 15));
 
         HBox root = new HBox();
         root.getChildren().addAll(text3);
@@ -143,6 +155,7 @@ public class Controller implements Initializable {
 
         Scene scene = new Scene(root, 450, 450);
         stage.setScene(scene);
+        stage.getIcons().add(new Image(Main.class.getResourceAsStream("logo.png")));
         stage.setTitle("User Guide");
         stage.setMinWidth(500);
         stage.setMinHeight(300);
@@ -150,11 +163,6 @@ public class Controller implements Initializable {
         stage.setMaxHeight(300);
 
         stage.show();
-    }
-
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-
     }
 }
 
