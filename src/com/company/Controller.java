@@ -56,7 +56,7 @@ public class Controller {
                 }
 
                 break;
-            case "mod":
+            case "MOD":
                 display.setText(display.getText() + "%");
                 break;
             case "x!":
