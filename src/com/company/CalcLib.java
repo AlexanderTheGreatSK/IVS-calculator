@@ -413,13 +413,13 @@ public class CalcLib {
     }
 
     /**
-     * Checks if a number is natural (whole) or not.
+     * Checks if a number is natural (including 0) or not.
      *
      * @param num  A double precision number.
      * @return true if the number is natural, false if it is not.
      */
     public static boolean isNatural(double num){
-        return Math.round(num) == num;
+        return Math.round(num) == num && num >= 0;
     }
 
     /**
@@ -449,6 +449,10 @@ public class CalcLib {
                 throw new ArithmeticException("The divisor in the modulo " +
                         "operation is not a natural number.");
             }
+            if(list.getSecondOperand() == 0) {
+                throw new ArithmeticException("The divisor in the modulo " +
+                        "operation is a zero.");
+            }
         }
 
         // Division - division by zero is undefined
@@ -468,7 +472,7 @@ public class CalcLib {
             if(list.getSecondOperand() == 0) {
                 throw new ArithmeticException("The root index is zero.");
             }
-            if(Math.round(list.getSecondOperand()) != list.getSecondOperand()) {
+            if(!isNatural(list.getSecondOperand())) {
                 throw new ArithmeticException(
                         "The root index is not a whole number.");
             }
@@ -524,10 +528,15 @@ public class CalcLib {
         // Factorial
         while(list.findOperator('!', false)) {
             result = list.getFirstOperand();
-            for(int i = (int)result - 1; i > 0; i--) {
-                result *= i;
+            if(result == 0) {
+                list.writeInResult(1, false);
             }
-            list.writeInResult(result, false);
+            else {
+                for (int i = (int) result - 1; i > 0; i--) {
+                    result *= i;
+                }
+                list.writeInResult(result, false);
+            }
         }
 
         // Power
@@ -633,9 +642,9 @@ public class CalcLib {
             return Double.toString(result);
         }
 
-        // If the result is a natural number, return it as an integer
+        // If the result is a whole number, return it as an integer
         // (the floating point digits are unnecessary)
-        if(isNatural(result)) {
+        if(Math.round(result) == result) {
             long newRes = Math.round(result);
             return Long.toString(newRes);
         }

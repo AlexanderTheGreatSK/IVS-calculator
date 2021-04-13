@@ -359,7 +359,7 @@ public class Tests {
                     () -> CalcLib.main("* 1"));
             assertThrows(ArithmeticException.class,
                     () -> CalcLib.main("root()"));
-            assertThrows(ArithmeticException.class,
+            assertThrows(StringIndexOutOfBoundsException.class,
                     () -> CalcLib.main("root(2, )"));
             assertThrows(ArithmeticException.class,
                     () -> CalcLib.main("root(2 2)"));
