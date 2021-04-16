@@ -75,6 +75,23 @@ public class Controller {
         }
     }
 
+    /**
+     * Calls the CalcLib main function to calculate the result of an operation.
+     * Handles any exception by returning the exception message.
+     *
+     * @param input an expression to be calculated
+     * @return result or an error message
+     */
+    public String callLibrary(String input) {
+        try {
+            input = CalcLib.main(input);
+        }
+        catch (Exception e){
+            input = e.getMessage();
+        }
+        return input;
+    }
+
         @FXML
         public void aboutBtn (ActionEvent event) {
             Stage stage = new Stage();
