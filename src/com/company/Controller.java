@@ -18,8 +18,6 @@ import javafx.stage.Stage;
 
 
 public class Controller {
-
-
     String textToShow = "Enter your input using your keyboard or the on-screen keyboard. Press Enter or the \"=\" button when you're done. \n" +
             "The \"AC\" button clears the calculator. Press the left arrow \"<-\" button or backspace to delete one character.\n" +
             "You can write sqrt on your keyboard to find the square root, the symbol \"%\" is used for modulo (remainder), not to be confused with percentage.\n" +
@@ -65,7 +63,7 @@ public class Controller {
             case "=":
                 String finalValue = display.getText();
                 display.setText(display.getText() + "=");
-                //funkcia
+                finalValue = callLibrary(finalValue);
                 System.out.println("FinalValue: " + finalValue);
 
                 break;
@@ -73,6 +71,23 @@ public class Controller {
                 display.setText(display.getText() + value);
                 break;
         }
+    }
+
+    /**
+     * Calls the CalcLib main function to calculate the result of an operation.
+     * Handles any exception by returning the exception message.
+     *
+     * @param input an expression to be calculated
+     * @return result or an error message
+     */
+    public String callLibrary(String input) {
+        try {
+            input = CalcLib.main(input);
+        }
+        catch (Exception e){
+            input = e.getMessage();
+        }
+        return input;
     }
 
         @FXML
