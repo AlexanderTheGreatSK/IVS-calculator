@@ -120,6 +120,7 @@ public class CalcLib {
         /**
          * Finds the first node (from head to tail) representing the given
          * operator and saves it into currentOperatorNode.
+         * Can be used for parentheses as well.
          *
          * @param op  a character representing the operation we are searching
          *            for.
@@ -197,6 +198,7 @@ public class CalcLib {
          */
         public void writeInResult(double num, boolean isTwoOperandOperation) {
             currentOperatorNode.prev.number = num;
+            currentOperatorNode.prev.operator = '\0';
             if (isTwoOperandOperation) {
                 remove(currentOperatorNode.next);
             }
@@ -243,6 +245,13 @@ public class CalcLib {
         }
 
         /**
+         * @return the operator of the first node of the doubly linked list.
+         */
+        public double getHeadOp() {
+            return head.operator;
+        }
+
+        /**
          * @return true if the list only contains one node, false otherwise.
          */
         public boolean isRootOnly() {
@@ -259,7 +268,16 @@ public class CalcLib {
             if(currentOperatorNode.next == null) {
                 return false;
             }
-            return currentOperatorNode.next.operator != '\0';
+            return currentOperatorNode.next.operator != '\0'
+                    && currentOperatorNode.next.operator != '('
+                    && currentOperatorNode.next.operator != ')';
+        }
+
+        public boolean isNextNodeANumber() {
+            if(currentOperatorNode.next == null) {
+                return false;
+            }
+            return currentOperatorNode.next.operator == '\0';
         }
 
         /**
@@ -300,6 +318,51 @@ public class CalcLib {
                 tail.next = newNode;
                 newNode.next = null;
                 newNode.prev = tail;
+            }
+        }
+
+        /**
+         * Returns a sublist inside parentheses. Expects currentOperatorNode to be '('.
+         * Also deletes nodes in the original list, preparing a result from
+         * the expression inside parentheses to be written as a one operand operation.
+         *
+         * @param list the original list
+         * @return a sublist that was inside parentheses
+         */
+        public DoublyLinkedList getSublist(DoublyLinkedList list) {
+        DoublyLinkedList sublist = new DoublyLinkedList();
+        list.remove(currentOperatorNode);
+        currentOperatorNode = currentOperatorNode.next;
+        Node node = currentOperatorNode;
+        int countToSkip = 0;
+        while(true) {
+            if(node.operator == '(') {
+                countToSkip++;
+            }
+            if(node.operator == ')') {
+                if(countToSkip == 0) {
+                    break;
+                }
+                countToSkip--;
+            }
+            node = node.next;
+        }
+        node.operator = ']';
+        while(currentOperatorNode.operator != ']') {
+            sublist.append(currentOperatorNode.operator, currentOperatorNode.number);
+            if(currentOperatorNode.next.operator != ']') {
+                list.remove(currentOperatorNode);
+            }
+            currentOperatorNode = currentOperatorNode.next;
+        }
+        return sublist;
+        }
+
+        public void testPrint() {
+            Node node = head;
+            for(int i = 0; node != null; i++) {
+                System.out.println(i + ": op: " + node.operator + " num: " + node.number);
+                node = node.next;
             }
         }
     }
@@ -397,11 +460,12 @@ public class CalcLib {
                     temp = temp + ch;
                 }
                 continue;
-            }else if(!temp.isEmpty()){
+            }
+            else if(!temp.isEmpty()){
                 list.append('\0', Double.parseDouble(temp));
                 temp = "";
             }
-            if(operatorsList.indexOf(ch) == -1) {
+            if(operatorsList.indexOf(ch) == -1 && !(ch == '(' || ch == ')')) {
                 throw new ArithmeticException("Invalid character inserted.");
             }
             list.append(ch, 0);
@@ -458,7 +522,7 @@ public class CalcLib {
         // Division - division by zero is undefined
         list.resetCurrentNode();
         while(list.findOperator('/', true)) {
-            if(list.getSecondOperand() == 0) {
+            if(list.isNextNodeANumber() && list.getSecondOperand() == 0) {
                 throw new ArithmeticException("Division by zero.");
             }
         }
@@ -476,6 +540,26 @@ public class CalcLib {
                 throw new ArithmeticException(
                         "The root index is not a whole number.");
             }
+        }
+
+        // Parentheses
+        list.resetCurrentNode();
+        int leftCount = 0;
+        int rightCount = 0;
+
+        if(list.getHeadOp() == '(') {
+            leftCount++;
+        }
+        while(list.findOperator('(', true)) {
+            leftCount++;
+        }
+        list.resetCurrentNode();
+        while(list.findOperator(')', true)) {
+            rightCount++;
+        }
+        if(leftCount != rightCount) {
+            throw new ArithmeticException(
+                    "Left and right parentheses don't match.");
         }
 
         // Power exceptions
@@ -524,6 +608,14 @@ public class CalcLib {
      */
     public static void calculate(DoublyLinkedList list) {
         double result;
+        // parentheses
+        while(list.findOperator('(', false)) {
+            DoublyLinkedList sublist = list.getSublist(list);
+            calculate(sublist);
+
+            list.findOperator(']', false);
+            list.writeInResult(sublist.getHeadNum(), false);
+        }
 
         // Factorial
         while(list.findOperator('!', false)) {
