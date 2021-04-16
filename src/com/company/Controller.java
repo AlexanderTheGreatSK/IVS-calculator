@@ -65,8 +65,9 @@ public class Controller {
             case "=":
                 String finalValue = display.getText();
                 display.setText(display.getText() + "=");
-                //funkcia
+                finalValue = callLibrary(finalValue);
                 System.out.println("FinalValue: " + finalValue);
+                display.setText(finalValue);
 
                 break;
             default:
