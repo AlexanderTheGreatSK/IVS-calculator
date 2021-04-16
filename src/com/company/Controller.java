@@ -19,19 +19,8 @@ import javafx.stage.Stage;
 
 public class Controller {
 
-
-    String textToShow = "Enter your input using your keyboard or the on-screen keyboard. Press Enter or the \"=\" button when you're done. \n" +
-            "The \"AC\" button clears the calculator. Press the left arrow \"<-\" button or backspace to delete one character.\n" +
-            "You can write sqrt on your keyboard to find the square root, the symbol \"%\" is used for modulo (remainder), not to be confused with percentage.\n" +
-            "Note that this calculator uses a decimal point, not a comma.\n" +
-            "Use parentheses, if necessary, for example \"a/(b+c)\". / Parentheses can't be used in this app.\n" +
-            "See the user guide for more information.";
-
     @FXML
     private TextField display;
-
-    @FXML
-    private ImageView imageView;
 
     @FXML
     public void buttonPress(ActionEvent event) {
