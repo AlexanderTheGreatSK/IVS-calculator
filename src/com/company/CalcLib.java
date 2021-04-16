@@ -53,11 +53,11 @@ public class CalcLib {
     public static class DoublyLinkedList {
 
         /**
-         * A single node represents either an operator or a number.
+         * A single node represents either an operator, a parenthesis or a number.
          * <p>
-         * If a node is an operator, number variable (double data type) equals
+         * If a node is an operator or a parenthesis, number variable (double data type) equals
          * 0.0, and the operator variable (char data type) contains a character
-         * representing the operation.
+         * representing the operation (or a parenthesis).
          * If a node is a number, operator variable contains '\0' and,
          * naturally, the number variable contains the number itself.
          * <p>
@@ -73,9 +73,9 @@ public class CalcLib {
             /**
              * Constructor of a single node.
              *
-             * @param inputChar  If the node is to be an operator, inputChar
-             *                   should contain a character representing the
-             *                   mathematical operation. It should contain
+             * @param inputChar  If the node is to be an operator (or a parenthesis),
+             *                   inputChar should contain a character representing
+             *                   the mathematical operation. It should contain
              *                   null byte ('\0') otherwise.
              * @param inputNum  If the node is to be a number, inputNum should
              *                  be equal to the number the node is to
@@ -262,7 +262,8 @@ public class CalcLib {
         }
 
         /**
-         * @return true if the next node is an operator, false if it's a number.
+         * @return true if the next node is an operator, false if it's a number
+         *         or a parenthesis.
          */
         public boolean isNextNodeAnOperator() {
             if(currentOperatorNode.next == null) {
@@ -273,6 +274,10 @@ public class CalcLib {
                     && currentOperatorNode.next.operator != ')';
         }
 
+        /**
+         * @return true if the next node is a number, false if it's an operator
+         *         or a parenthesis.
+         */
         public boolean isNextNodeANumber() {
             if(currentOperatorNode.next == null) {
                 return false;
@@ -303,7 +308,7 @@ public class CalcLib {
         /**
          * Appends a node to the list with a given operation and a given number.
          *
-         * @param op  a character representing a operation the node to append
+         * @param op  a character representing a operation or a parenthesis the node to append
          *            should contain.
          * @param num  a number the node to append should contain.
          */
@@ -328,11 +333,16 @@ public class CalcLib {
          *
          * @param list the original list
          * @return a sublist that was inside parentheses
+         * @throws ArithmeticException if there is nothing between parentheses
          */
-        public DoublyLinkedList getSublist(DoublyLinkedList list) {
+        public DoublyLinkedList getSublist(DoublyLinkedList list)
+                throws ArithmeticException {
         DoublyLinkedList sublist = new DoublyLinkedList();
         list.remove(currentOperatorNode);
         currentOperatorNode = currentOperatorNode.next;
+        if(currentOperatorNode.operator == ')') {
+            throw new ArithmeticException("Nothing inside parentheses.");
+        }
         Node node = currentOperatorNode;
         int countToSkip = 0;
         while(true) {
@@ -358,6 +368,7 @@ public class CalcLib {
         return sublist;
         }
 
+        // Prints the list, for debugging purposes only
         public void testPrint() {
             Node node = head;
             for(int i = 0; node != null; i++) {
@@ -368,20 +379,20 @@ public class CalcLib {
     }
 
     /**
-     * Parses the input string into a doubly linked list - each operand or
-     * operator is a single node.
+     * Parses the input string into a doubly linked list - each operand,
+     * operator or a parenthesis is a single node.
      * <p>
      * Before appending operands and operators to the list, removes all white
      * characters, converts mod to '%, pow to '^', root to '|'
      * and replaces ',' with '.'.
      *
      * @param input  a string containing exactly what the user entered.
-     * @return the doubly linked list containing all operations and
-     *               operands.
+     * @return the doubly linked list containing all operations,
+     *               operands and parenthesis.
      * @throws ArithmeticException if it fails to parse the input.
      */
     public static DoublyLinkedList parser(String input)
-            throws ArithmeticException{
+            throws ArithmeticException {
         DoublyLinkedList list = new DoublyLinkedList();
 
         // Remove all white characters
@@ -446,7 +457,7 @@ public class CalcLib {
         // Replace all commas with dots
         input = input.replaceAll(",", ".");
 
-        // Fill list with given operators and numbers
+        // Fill list with given operators, numbers and parentheses
         String temp = "";
         int len = input.length();
         char ch = '0';
@@ -542,11 +553,11 @@ public class CalcLib {
             }
         }
 
-        // Parentheses
+        // Parentheses not matching
+        // TODO parentheses in a wrong order, for example 1 + )42)
         list.resetCurrentNode();
         int leftCount = 0;
         int rightCount = 0;
-
         if(list.getHeadOp() == '(') {
             leftCount++;
         }
@@ -596,7 +607,7 @@ public class CalcLib {
      * operations with lower precedence and ends if there is only one item
      * left in the linked list - the result of the calculation.
      * <p>
-     * Precedence: factorial > power > root > modulo >
+     * Precedence: parentheses > factorial > power > root > modulo >
      * division and multiplication > subtraction and addition
      * <p>
      * For easier implementation, every division is converted to multiplication
@@ -608,7 +619,7 @@ public class CalcLib {
      */
     public static void calculate(DoublyLinkedList list) {
         double result;
-        // parentheses
+        // Parentheses
         while(list.findOperator('(', false)) {
             DoublyLinkedList sublist = list.getSublist(list);
             calculate(sublist);
