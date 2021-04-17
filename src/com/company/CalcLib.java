@@ -118,20 +118,20 @@ public class CalcLib {
         }
 
         /**
-         * Finds the first node (from head to tail) representing the given
-         * operator and saves it into currentOperatorNode.
+         * Finds the first node (from head to tail) representing one of
+         * the given operators and saves it into currentOperatorNode.
          * Can be used for parentheses as well.
          *
-         * @param op  a character representing the operation we are searching
-         *            for.
+         * @param operators  a string containing one or more characters
+         *            the operation we are searching for.
          * @param nextNotFirst  If false, it will save the position of the
          *                      first matching operator it finds.
          *                      If true, it will save the position of the
          *                      next matching operator instead.
-         * @return true if given operator was found, or false if given
-         *         operator was not present in the list.
+         * @return the operator that was found,
+         *         or '\0' if none was present in the list.
          */
-        public boolean findOperator(char op, boolean nextNotFirst) {
+        public char findOperators(String operators, boolean nextNotFirst) {
             Node node;
             if(nextNotFirst) {
                 node = currentOperatorNode.next;
@@ -140,13 +140,13 @@ public class CalcLib {
                 node = head;
             }
             while (node != null) {
-                if (node.operator == op) {
+                if (operators.indexOf(node.operator) != -1) {
                     currentOperatorNode = node;
-                    return true;
+                    return node.operator;
                 }
                 node = node.next;
             }
-            return false;
+            return '\0';
         }
 
         /**
@@ -510,7 +510,7 @@ public class CalcLib {
 
         // Factorial - the operand is not a natural number
         list.resetCurrentNode();
-        while(list.findOperator('!', true)) {
+        while(list.findOperators("!", true) != '\0') {
             if(!isNatural(list.getFirstOperand())) {
                 throw new ArithmeticException(
                         "The factorial argument is not a natural number.");
@@ -519,7 +519,7 @@ public class CalcLib {
 
         // Modulo - the divisor is not a natural number
         list.resetCurrentNode();
-        while(list.findOperator('%', true)) {
+        while(list.findOperators("%", true) != '\0') {
             if(!isNatural(list.getSecondOperand())){
                 throw new ArithmeticException("The divisor in the modulo " +
                         "operation is not a natural number.");
@@ -532,7 +532,7 @@ public class CalcLib {
 
         // Division - division by zero is undefined
         list.resetCurrentNode();
-        while(list.findOperator('/', true)) {
+        while(list.findOperators("/", true) != '\0') {
             if(list.isNextNodeANumber() && list.getSecondOperand() == 0) {
                 throw new ArithmeticException("Division by zero.");
             }
@@ -540,7 +540,7 @@ public class CalcLib {
 
         // Root exception
         list.resetCurrentNode();
-        while(list.findOperator('|', true)) {
+        while(list.findOperators("|", true) != '\0') {
             if(list.getSecondOperand()%2 == 0 && list.getFirstOperand() < 0) {
                 throw new ArithmeticException("Even root of a negative number.");
             }
@@ -554,19 +554,32 @@ public class CalcLib {
         }
 
         // Parentheses not matching
-        // TODO parentheses in a wrong order, for example 1 + )42)
+        // This is a mess but it is needed to find
+        // parentheses in a wrong order, for example 1 + )42(
         list.resetCurrentNode();
         int leftCount = 0;
         int rightCount = 0;
+        // head can never be found with findOperators(..., true)
         if(list.getHeadOp() == '(') {
             leftCount++;
         }
-        while(list.findOperator('(', true)) {
-            leftCount++;
+        if(list.getHeadOp() == ')') {
+            throw new ArithmeticException(
+                    "Right parenthesis before left.");
         }
-        list.resetCurrentNode();
-        while(list.findOperator(')', true)) {
-            rightCount++;
+        char parenthesis = '*';
+        while(parenthesis != '\0') {
+            parenthesis = list.findOperators("()", true);
+            if(parenthesis == '(') {
+                leftCount++;
+            }
+            else if (parenthesis == ')') {
+                 rightCount++;
+            }
+            if(rightCount > leftCount) {
+                throw new ArithmeticException(
+                        "Right parenthesis before left.");
+            }
         }
         if(leftCount != rightCount) {
             throw new ArithmeticException(
@@ -575,7 +588,7 @@ public class CalcLib {
 
         // Power exceptions
         list.resetCurrentNode();
-        while(list.findOperator('^', true)) {
+        while(list.findOperators("^", true) != '\0') {
             if(Math.round(list.getSecondOperand()) != list.getSecondOperand()) {
                 throw new ArithmeticException(
                         "The exponent of power is not a whole number.");
@@ -591,7 +604,7 @@ public class CalcLib {
             if(op == '!') {
                 continue;
             }
-            while(list.findOperator(op, true)) {
+            while(list.findOperators(Character.toString(op), true) != '\0') {
                 if(list.isNextNodeAnOperator()){
                     throw new ArithmeticException("There are two operators " +
                             "between which there is no operand.");
@@ -620,16 +633,17 @@ public class CalcLib {
     public static void calculate(DoublyLinkedList list) {
         double result;
         // Parentheses
-        while(list.findOperator('(', false)) {
+        while(list.findOperators("(", false) != '\0') {
             DoublyLinkedList sublist = list.getSublist(list);
             calculate(sublist);
-
-            list.findOperator(']', false);
+            list.findOperators("]", false);
             list.writeInResult(sublist.getHeadNum(), false);
+            // the list has changed, needs to be validated again
+            validate(list);
         }
 
         // Factorial
-        while(list.findOperator('!', false)) {
+        while(list.findOperators("!", false) != '\0') {
             result = list.getFirstOperand();
             if(result == 0) {
                 list.writeInResult(1, false);
@@ -643,14 +657,14 @@ public class CalcLib {
         }
 
         // Power
-        while(list.findOperator('^', false)) {
+        while(list.findOperators("^", false) != '\0') {
             result = Math.pow(list.getFirstOperand(),
                     list.getSecondOperand());
             list.writeInResult(result, true);
         }
 
         // Root
-        while(list.findOperator('|', false)) {
+        while(list.findOperators("|", false) != '\0') {
             boolean negativeIndex = false;
             if(list.getFirstOperand() < 0) {
                 list.changeFirstOperand(-list.getFirstOperand());
@@ -665,33 +679,33 @@ public class CalcLib {
         }
 
         // Modulo
-        while(list.findOperator('%', false)) {
+        while(list.findOperators("%", false) != '\0') {
             result = list.getFirstOperand() %
                     list.getSecondOperand();
             list.writeInResult(result, true);
         }
 
         // Convert division to multiplication
-        while(list.findOperator('/', false)) {
+        while(list.findOperators("/", false) != '\0') {
             list.changeOperator('*');
             list.changeSecondOperand(1 / list.getSecondOperand());
         }
 
         // Multiplication
-        while(list.findOperator('*', false)) {
+        while(list.findOperators("*", false) != '\0') {
             result = list.getFirstOperand() *
                     list.getSecondOperand();
             list.writeInResult(result, true);
         }
 
         // Convert minus sings to plus signs (negating the next operand)
-        while(list.findOperator('-', false)) {
+        while(list.findOperators("-", false) != '\0') {
             list.changeOperator('+');
             list.changeSecondOperand(- list.getSecondOperand());
         }
 
         // Addition
-        while(list.findOperator('+', false)) {
+        while(list.findOperators("+", false) != '\0') {
             result = list.getFirstOperand() +
                     list.getSecondOperand();
             list.writeInResult(result, true);

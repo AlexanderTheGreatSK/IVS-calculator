@@ -16,7 +16,7 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
-// TODO fix documentation
+// TODO documentation
 public class Controller {
 
     @FXML
@@ -57,7 +57,7 @@ public class Controller {
                 break;
             case "=":
                 String finalValue = display.getText();
-                display.setText(display.getText() + "=");
+                //display.setText(display.getText() + "=");
                 finalValue = callLibrary(finalValue);
                 System.out.println("FinalValue: " + finalValue);
                 resultDisplay.setText(finalValue);
@@ -141,6 +141,7 @@ public class Controller {
     @FXML
     public void helpBtn (ActionEvent event){
         Stage stage = new Stage();
+        // TODO help guide
         String textToShow = "Enter your input using your keyboard or the on-screen keyboard. Press Enter or the \"=\" button when you're done. \n" +
                 "The \"AC\" button clears the calculator. Press the left arrow \"<-\" button or backspace to delete one character.\n" +
                 "You can write sqrt on your keyboard to find the square root, the symbol \"%\" is used for modulo (remainder), not to be confused with percentage.\n" +
