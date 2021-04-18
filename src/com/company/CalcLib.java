@@ -305,6 +305,10 @@ public class CalcLib {
             }
         }
 
+        public void removeHead() {
+            remove(head);
+        }
+
         /**
          * Appends a node to the list with a given operation and a given number.
          *
@@ -705,6 +709,9 @@ public class CalcLib {
         }
 
         // Addition
+        if(list.getHeadOp() == '+') {
+            list.removeHead();
+        }
         while(list.findOperators("+", false) != '\0') {
             result = list.getFirstOperand() +
                     list.getSecondOperand();
