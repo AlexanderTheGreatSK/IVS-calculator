@@ -423,18 +423,19 @@ public class CalcLib {
             if(tmp.indexOf(',') == -1) {
                 throw new ArithmeticException("Malformed power expression.");
             }
-            tmp = tmp.replace(",", "^");
+            tmp = tmp.replace(",", ")^(");
             if(tmp.charAt(0) == '-'){
                 tmp = tmp.replace('-', '~');
             }
-            if(tmp.charAt(tmp.indexOf('^') + 1) == '-'){
+            if(tmp.charAt(tmp.indexOf('^') + 2) == '-'){
                 tmp = tmp.replace('-', '~');
             }
+            tmp = "(" + tmp + ")";
             input = input.replace(orig, tmp);
         }
         
         // Converts "root" to '|'
-        // For example root(5,2) => 5|2 (represents sqrt(5))
+        // For example root(5,2) => (5)|(2) (represents sqrt(5))
         while(true){
             indexFrom = input.indexOf("root");
             if(indexFrom == -1){
@@ -448,13 +449,14 @@ public class CalcLib {
             if(tmp.indexOf(',') == -1) {
                 throw new ArithmeticException("Malformed root expression.");
             }
-            tmp = tmp.replace(",", "|");
+            tmp = tmp.replace(",", ")|(");
             if(tmp.charAt(0) == '-'){
                 tmp = tmp.replace('-', '~');
             }
-            if(tmp.charAt(tmp.indexOf('|') + 1) == '-'){
+            if(tmp.charAt(tmp.indexOf('|') + 2) == '-'){
                 tmp = tmp.replace('-', '~');
             }
+            tmp = "(" + tmp + ")";
             input = input.replace(orig, tmp);
         }
 
@@ -524,11 +526,11 @@ public class CalcLib {
         // Modulo - the divisor is not a natural number
         list.resetCurrentNode();
         while(list.findOperators("%", true) != '\0') {
-            if(!isNatural(list.getSecondOperand())){
+            if(!isNatural(list.getSecondOperand())) {
                 throw new ArithmeticException("The divisor in the modulo " +
                         "operation is not a natural number.");
             }
-            if(list.getSecondOperand() == 0) {
+            if(list.isNextNodeANumber() && list.getSecondOperand() == 0) {
                 throw new ArithmeticException("The divisor in the modulo " +
                         "operation is a zero.");
             }
@@ -545,15 +547,24 @@ public class CalcLib {
         // Root exception
         list.resetCurrentNode();
         while(list.findOperators("|", true) != '\0') {
-            if(list.getSecondOperand()%2 == 0 && list.getFirstOperand() < 0) {
+            if(list.isNextNodeANumber() && (list.getSecondOperand()%2 == 0 && list.getFirstOperand() < 0)) {
                 throw new ArithmeticException("Even root of a negative number.");
             }
-            if(list.getSecondOperand() == 0) {
+            if(list.isNextNodeANumber() && list.getSecondOperand() == 0) {
                 throw new ArithmeticException("The root index is zero.");
             }
-            if(!isNatural(list.getSecondOperand())) {
+            if(list.isNextNodeANumber() && !isNatural(list.getSecondOperand())) {
                 throw new ArithmeticException(
-                        "The root index is not a whole number.");
+                        "The root index is not a natural number.");
+            }
+        }
+
+        // Power exceptions
+        list.resetCurrentNode();
+        while(list.findOperators("^", true) != '\0') {
+            if(Math.round(list.getSecondOperand()) != list.getSecondOperand()) {
+                throw new ArithmeticException(
+                        "The exponent of power is not a whole number.");
             }
         }
 
@@ -588,15 +599,6 @@ public class CalcLib {
         if(leftCount != rightCount) {
             throw new ArithmeticException(
                     "Left and right parentheses don't match.");
-        }
-
-        // Power exceptions
-        list.resetCurrentNode();
-        while(list.findOperators("^", true) != '\0') {
-            if(Math.round(list.getSecondOperand()) != list.getSecondOperand()) {
-                throw new ArithmeticException(
-                        "The exponent of power is not a whole number.");
-            }
         }
 
         // Other - Two operators without a number separating them is only
