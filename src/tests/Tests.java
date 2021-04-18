@@ -6,8 +6,14 @@ import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 
+/**
+ * @brief Unit tests for the calculator library
+ */
 public class Tests {
 
+    /**
+     * @brief Simple inputs - empty inputs, a constant etc.
+     */
     @Nested
     @DisplayName("No operation, only a constant")
     class NoOp {
@@ -43,6 +49,9 @@ public class Tests {
         }
     }
 
+    /**
+     * @brief Accept both ',' and '.' as floating point symbol.
+     */
     @Test
     @DisplayName("Acceptance of both ',' and '.' as floating point symbols")
     void FloatingSymbol() {
@@ -54,6 +63,10 @@ public class Tests {
                 CalcLib.main("0,1 + 0.1"));
     }
 
+    /**
+     * @brief Basic operations (one operator per test): plus, minus,
+     * multiplication and division.
+     */
     @Nested
     @DisplayName("Basic operations, single operator")
     class BasicSingle {
@@ -165,6 +178,10 @@ public class Tests {
         }
     }
 
+    /**
+     * @brief Advanced operations (one operator per test): factorial, power,
+     * root, modulo.
+     */
     @Nested
     @DisplayName("Advanced operations, single operator")
     class AdvancedSingle {
@@ -248,6 +265,9 @@ public class Tests {
         }
     }
 
+    /**
+     * @brief Ignoring spaces.
+     */
     @Nested
     @DisplayName("White characters influence")
     class WhiteChars {
@@ -322,6 +342,9 @@ public class Tests {
         }
     }
 
+    /**
+     * @brief Illegal inputs.
+     */
     @Nested
     @DisplayName("Illegal input")
     class IllegalInput {
@@ -466,6 +489,9 @@ public class Tests {
         }
     }
 
+    /**
+     * @brief Operation precedence.
+     */
     @Test
     @DisplayName("Operation precedence")
     void OpPrec() {
@@ -485,6 +511,9 @@ public class Tests {
                 CalcLib.main("100 + 2 * 3!"));
     }
 
+    /**
+     * @brief More complex calculations.
+     */
     @Test
     @DisplayName("More complex calculations")
     void ComplexCalculations() {
@@ -502,11 +531,12 @@ public class Tests {
                 CalcLib.main("root(123456, 4) - pow(2, 15)"));
     }
 
-
+    /**
+     * @brief Advanced tests for unnecessary implementation.
+     */
     @Nested
     @DisplayName("Advanced tests for unnecessary implementation")
     class Advanced {
-
 
         @Test
         @DisplayName("Calculations with parentheses")
