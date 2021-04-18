@@ -507,17 +507,17 @@ public class Tests {
     @DisplayName("Advanced tests for unnecessary implementation")
     class Advanced {
 
-        @Disabled
+
         @Test
         @DisplayName("Calculations with parentheses")
         void Parentheses() {
-            assertEquals("1.86384262",
+            assertEquals("1863842629.5752265",
                     CalcLib.main("1234 * (root(10, 2) + (17mod2)) * 9!"));
             assertEquals("-3627100",
                     CalcLib.main("(pow(4, 2) + 1) * root(10000, 2) - (10! * (120%17))"));
-            assertEquals("-571.42857142",
+            assertEquals("-571.42857143",
                     CalcLib.main("(100*100)/(250+100)-50*(10+(1*2))"));
-            assertEquals("1131.37084989",
+            assertEquals("1131.3708499",
                     CalcLib.main("(((100%21)*400)/(root(2,2)*((pow(2,2)))))"));
             assertEquals("-18",
                     CalcLib.main("pow(2, 2) - (2*(5 + (6)))"));
@@ -537,7 +537,6 @@ public class Tests {
                     CalcLib.main("root(50*2, 2)"));
         }
 
-        @Disabled
         @Test
         @DisplayName("Uneven number of parentheses")
         void NoPairPar() {

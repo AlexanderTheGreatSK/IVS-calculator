@@ -9,7 +9,10 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="417.0" prefWidth="286.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.company.Controller">
    <center>
@@ -68,7 +71,21 @@
              </MenuBar>
          </top>
          <center>
-            <TextField prefHeight="104.0" prefWidth="286.0" BorderPane.alignment="CENTER" fx:id="display"/>
+            <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+               <children>
+                  <HBox prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+                           <children>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Result:" textAlignment="CENTER" wrappingWidth="57.0" />
+                           </children>
+                        </VBox>
+                        <TextField fx:id="resultDisplay" prefHeight="25.0" prefWidth="271.0" />
+                     </children>
+                  </HBox>
+                  <TextField fx:id="display" prefHeight="159.0" prefWidth="286.0" />
+               </children>
+            </VBox>
          </center>
       </BorderPane>
    </top>

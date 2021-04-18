@@ -19,19 +19,11 @@ import javafx.stage.Stage;
 
 public class Controller {
 
-
-    String textToShow = "Enter your input using your keyboard or the on-screen keyboard. Press Enter or the \"=\" button when you're done. \n" +
-            "The \"AC\" button clears the calculator. Press the left arrow \"<-\" button or backspace to delete one character.\n" +
-            "You can write sqrt on your keyboard to find the square root, the symbol \"%\" is used for modulo (remainder), not to be confused with percentage.\n" +
-            "Note that this calculator uses a decimal point, not a comma.\n" +
-            "Use parentheses, if necessary, for example \"a/(b+c)\". / Parentheses can't be used in this app.\n" +
-            "See the user guide for more information.";
-
     @FXML
     private TextField display;
 
     @FXML
-    private ImageView imageView;
+    private TextField resultDisplay;
 
     @FXML
     public void buttonPress(ActionEvent event) {
@@ -40,6 +32,7 @@ public class Controller {
         switch (value) {
             case "AC":
                 display.setText("");
+                resultDisplay.setText("");
                 break;
             case "√":
                 display.setText(display.getText() + "root(");
@@ -64,15 +57,33 @@ public class Controller {
                 break;
             case "=":
                 String finalValue = display.getText();
-                display.setText(display.getText() + "=");
-                //funkcia
+                //display.setText(display.getText() + "=");
+                finalValue = callLibrary(finalValue);
                 System.out.println("FinalValue: " + finalValue);
+                resultDisplay.setText(finalValue);
 
                 break;
             default:
                 display.setText(display.getText() + value);
                 break;
         }
+    }
+
+    /**
+     * Calls the CalcLib main function to calculate the result of an operation.
+     * Handles any exception by returning the exception message.
+     *
+     * @param input an expression to be calculated
+     * @return result or an error message
+     */
+    public String callLibrary(String input) {
+        try {
+            input = CalcLib.main(input);
+        }
+        catch (Exception e){
+            input = e.getMessage();
+        }
+        return input;
     }
 
         @FXML
@@ -130,12 +141,22 @@ public class Controller {
     @FXML
     public void helpBtn (ActionEvent event){
         Stage stage = new Stage();
-        String textToShow = "Enter your input using your keyboard or the on-screen keyboard. Press Enter or the \"=\" button when you're done. \n" +
-                "The \"AC\" button clears the calculator. Press the left arrow \"<-\" button or backspace to delete one character.\n" +
-                "You can write sqrt on your keyboard to find the square root, the symbol \"%\" is used for modulo (remainder), not to be confused with percentage.\n" +
-                "Note that this calculator uses a decimal point, not a comma.\n" +
-                "Use parentheses, if necessary, for example \"a/(b+c)\". / Parentheses can't be used in this app.\n" +
-                "See the user guide for more information.";
+        String textToShow = "Enter your input using your keyboard or the on-screen keyboard. " +
+                "Press Enter or the \"=\" button when you're done. " +
+                "The \"AC\" button clears the calculator. Press the \"DEL\" button or backspace to delete one character.\n\n" +
+
+                "You can write x^n or pow(x, n) to find the nth power of x, or root(x, n) to find the nth root of x. " +
+                "Only a whole power or natural root can be calculated (for example NOT 4^0.5).\n\n" +
+                "The symbol \"%\" (button \"MOD\") is used for modulo (remainder), not to be confused with percentage." +
+                "Both decimal point and comma can be used on the input." +
+                "Use parentheses, if necessary, for example \"a/(b+c)\".\n\n\n" +
+
+                "ADVANCED OPTIONS\n" +
+                "You can use the symbol \"|\" for root, for example x|n is the nth root of x." +
+                "When writing pow() or root(), you can write for example pow(4+5, 3), but you can't use parentheses." +
+                "However, when using \"^\" or \"|\", you can use parentheses to calculate a more complex expression, for example 4|(4/(1+1)).\n" +
+                "\n\n" +
+                "See the full user guide for more information.";
 
 
         Text text3 = new Text(textToShow);
@@ -158,9 +179,9 @@ public class Controller {
         stage.getIcons().add(new Image(Main.class.getResourceAsStream("logo.png")));
         stage.setTitle("User Guide");
         stage.setMinWidth(500);
-        stage.setMinHeight(300);
+        stage.setMinHeight(560);
         stage.setMaxWidth(500);
-        stage.setMaxHeight(300);
+        stage.setMaxHeight(560);
 
         stage.show();
     }
