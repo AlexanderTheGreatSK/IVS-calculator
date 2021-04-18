@@ -16,7 +16,7 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
-// TODO documentation
+
 public class Controller {
 
     @FXML
@@ -142,12 +142,22 @@ public class Controller {
     public void helpBtn (ActionEvent event){
         Stage stage = new Stage();
         // TODO help guide
-        String textToShow = "Enter your input using your keyboard or the on-screen keyboard. Press Enter or the \"=\" button when you're done. \n" +
-                "The \"AC\" button clears the calculator. Press the left arrow \"<-\" button or backspace to delete one character.\n" +
-                "You can write sqrt on your keyboard to find the square root, the symbol \"%\" is used for modulo (remainder), not to be confused with percentage.\n" +
-                "Note that this calculator uses a decimal point, not a comma.\n" +
-                "Use parentheses, if necessary, for example \"a/(b+c)\". / Parentheses can't be used in this app.\n" +
-                "See the user guide for more information.";
+        String textToShow = "Enter your input using your keyboard or the on-screen keyboard. " +
+                "Press Enter or the \"=\" button when you're done. \n" +
+
+                "The \"AC\" button clears the calculator. Press the \"DEL\" button or backspace to delete one character.\n" +
+                "You can write x^n or pow(x, n) to find the nth power of x, or root(x, n) to find the nth root of x. " +
+                "only a natural power or root can be calculated (for example NOT 4^0.5).\n" +
+                "The symbol \"%\" (button \"MOD\") is used for modulo (remainder), not to be confused with percentage.\n" +
+                "Both decimal point and comma can be used on the input.\n" +
+                "Use parentheses, if necessary, for example \"a/(b+c)\".\n" +
+
+                "\nADVANCED OPTIONS\n" +
+                "You can use the symbol \"|\" for root, for example x|n is the nth root of x.\n" +
+                "When writing pow() or root(), only two numbers separated by a comma can be inside (you CAN'T write pow(4+5, 3).\n" +
+                "However, when using \"^\" or \"|\", you can use parentheses to calculate a more complex expression, for example 4|(4/2).\n" +
+                "\n" +
+                "See the full user guide for more information.";
 
 
         Text text3 = new Text(textToShow);
