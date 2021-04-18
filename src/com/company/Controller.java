@@ -142,20 +142,20 @@ public class Controller {
     public void helpBtn (ActionEvent event){
         Stage stage = new Stage();
         String textToShow = "Enter your input using your keyboard or the on-screen keyboard. " +
-                "Press Enter or the \"=\" button when you're done. \n" +
+                "Press Enter or the \"=\" button when you're done. " +
+                "The \"AC\" button clears the calculator. Press the \"DEL\" button or backspace to delete one character.\n\n" +
 
-                "The \"AC\" button clears the calculator. Press the \"DEL\" button or backspace to delete one character.\n" +
                 "You can write x^n or pow(x, n) to find the nth power of x, or root(x, n) to find the nth root of x. " +
-                "only a whole power or natural root can be calculated (for example NOT 4^0.5).\n" +
-                "The symbol \"%\" (button \"MOD\") is used for modulo (remainder), not to be confused with percentage.\n" +
-                "Both decimal point and comma can be used on the input.\n" +
-                "Use parentheses, if necessary, for example \"a/(b+c)\".\n" +
+                "Only a whole power or natural root can be calculated (for example NOT 4^0.5).\n\n" +
+                "The symbol \"%\" (button \"MOD\") is used for modulo (remainder), not to be confused with percentage." +
+                "Both decimal point and comma can be used on the input." +
+                "Use parentheses, if necessary, for example \"a/(b+c)\".\n\n\n" +
 
-                "\nADVANCED OPTIONS\n" +
-                "You can use the symbol \"|\" for root, for example x|n is the nth root of x.\n" +
-                "When writing pow() or root(), you can write for example pow(4+5, 3), but you can't use parentheses.\n" +
+                "ADVANCED OPTIONS\n" +
+                "You can use the symbol \"|\" for root, for example x|n is the nth root of x." +
+                "When writing pow() or root(), you can write for example pow(4+5, 3), but you can't use parentheses." +
                 "However, when using \"^\" or \"|\", you can use parentheses to calculate a more complex expression, for example 4|(4/(1+1)).\n" +
-                "\n" +
+                "\n\n" +
                 "See the full user guide for more information.";
 
 
@@ -179,9 +179,9 @@ public class Controller {
         stage.getIcons().add(new Image(Main.class.getResourceAsStream("logo.png")));
         stage.setTitle("User Guide");
         stage.setMinWidth(500);
-        stage.setMinHeight(300);
+        stage.setMinHeight(560);
         stage.setMaxWidth(500);
-        stage.setMaxHeight(300);
+        stage.setMaxHeight(560);
 
         stage.show();
     }
