@@ -14,7 +14,7 @@
  * standrad input and sends them to the calculator library.
  * Used to profile the application.
  *
- * @autor xskalo01
+ * @author xskalo01
  * @version 1.0
  */
 

@@ -22,8 +22,8 @@
  * This class involves implementation of a doubly linked list and many methods
  * allowing us to work with it.
  *
- * @autor xskalo01
- * @autor xfrybo01
+ * @author xskalo01
+ * @author xfrybo01
  * @version 1.0
  */
 
