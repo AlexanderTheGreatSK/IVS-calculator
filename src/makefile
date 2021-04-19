@@ -47,8 +47,8 @@ profile: all
 	#Compile the profiling app
 	javac $(PROFILECLASS) $(LIBCLASS) -d $(BUILDDIR)
 
-doc: #TODO
-	#Not implemented yet
+doc: 
+	doxygen doxyfile
 
 run: all
 	cd ../build/ && java --module-path ../lib/javaFX --add-modules javafx.controls,javafx.fxml com.company.Main

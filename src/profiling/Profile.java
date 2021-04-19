@@ -9,15 +9,6 @@
  * Authors: Patrik Skaloš (xskalo01)
  *****************************************************************************/
 
-/**
- * Constructs expressions to calculate standard deviation of numbers entered by
- * standrad input and sends them to the calculator library.
- * Used to profile the application.
- *
- * @author xskalo01
- * @version 1.0
- */
-
 package profiling;
 
 import com.company.*;
@@ -26,10 +17,21 @@ import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @brief Calculating standard deviation using the calculator library in a single 
+ * function
+ *
+ * Constructs expressions to calculate standard deviation of numbers entered by
+ * standrad input and sends them to the calculator library.
+ * Used to profile the application.
+ *
+ * @author xskalo01
+ * @version 1.0
+ */
 public class Profile {
 
     /**
-     * Calculating standard deviation using the calculator library.
+     * @brief Calculating standard deviation using the calculator library.
      * <p>
      * Calculation steps:
      * sum of all the numbers -> mean -> distances of numbers to the

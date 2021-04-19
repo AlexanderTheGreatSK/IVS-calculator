@@ -10,7 +10,12 @@
  *          Jiřina Frýbortová (xfybo01)
  *****************************************************************************/
 
+package com.company;
+import java.text.DecimalFormat;
+
 /**
+ * @brief Calculator library
+ *
  * Library for the calculator - main method takes a string representing
  * the expression to calculate, parses it into a doubly linked list
  * (one node represents one operand or one operator), calculates the result
@@ -26,11 +31,6 @@
  * @author xfrybo01
  * @version 1.0
  */
-
-package com.company;
-import java.text.DecimalFormat;
-
-
 public class CalcLib {
 
     // Operators the library is able to work with:
@@ -38,8 +38,8 @@ public class CalcLib {
     private static final String operatorsList = "+-*/!%^|";
 
     /**
-     * Implementation of a doubly linked list.
-     * <p>
+     * @brief Implementation of a doubly linked list.
+     *
      * The list consists of interconnected nodes (the first one is the 'head'
      * and the last one is the 'tail'). Each node points to a previous one as
      * well as the next one. Each node also contains a character variable
@@ -383,6 +383,8 @@ public class CalcLib {
     }
 
     /**
+     * @brief Parses the entered string into a doubly linked list.
+     *
      * Parses the input string into a doubly linked list - each operand,
      * operator or a parenthesis is a single node.
      * <p>
@@ -494,7 +496,7 @@ public class CalcLib {
     }
 
     /**
-     * Checks if a number is natural (including 0) or not.
+     * @brief Checks if a number is natural (including 0) or not.
      *
      * @param num  A double precision number.
      * @return true if the number is natural, false if it is not.
@@ -504,7 +506,7 @@ public class CalcLib {
     }
 
     /**
-     * Checks the parsed input for invalid operations, forbidden characters,
+     * @brief Checks the parsed input for invalid operations, forbidden characters,
      * malformed expressions and so on.
      *
      * @param list  The doubly linked list containing all operations and
@@ -620,6 +622,9 @@ public class CalcLib {
     }
 
     /**
+     * @brief Calculates the result of operators and operands in the linked
+     * list.
+     *
      * Searches the doubly linked list for operations with the highest
      * precedence, calculates the result of these operations and replaces it's
      * nodes (operand(s) and the operation) with the result, then continues with
@@ -723,6 +728,8 @@ public class CalcLib {
 
 
     /**
+     * @brief Parse the input, check if it is valid and calculate the result.
+     *
      * Parses the input string into a doubly linked list, checks if the input
      * is valid, calculates the result, converts it to a string in a suitable
      * format and finally, returns it as a string.
