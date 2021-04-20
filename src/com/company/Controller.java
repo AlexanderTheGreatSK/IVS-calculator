@@ -26,6 +26,14 @@ public class Controller {
     private TextField resultDisplay;
 
     @FXML
+    public void onEnter(ActionEvent ae){
+        String finalValue = display.getText();
+        finalValue = callLibrary(finalValue);
+        System.out.println("FinalValue: " + finalValue);
+        resultDisplay.setText(finalValue);
+    }
+
+    @FXML
     public void buttonPress(ActionEvent event) {
         String value = ((Button) event.getSource()).getText();
 
@@ -35,8 +43,13 @@ public class Controller {
                 resultDisplay.setText("");
                 break;
             case "√":
-                display.setText(display.getText() + "root(");
-
+                if (isNumeric(resultDisplay.getText())) {
+                    display.setText("root(" + resultDisplay.getText() + ",");
+                    resultDisplay.setText("");
+                } else {
+                    resultDisplay.setText("");
+                    display.setText(display.getText() + "root(");
+                }
                 break;
             case "DEL":
                 if (display.getText().length() != 0) {
@@ -50,23 +63,77 @@ public class Controller {
 
                 break;
             case "MOD":
-                display.setText(display.getText() + "%");
-                break;
-            case "x!":
-                display.setText(display.getText() + "!");
+                if (isNumeric(resultDisplay.getText())) {
+                    display.setText(resultDisplay.getText() + "%");
+                    resultDisplay.setText("");
+                } else {
+                    resultDisplay.setText("");
+                    display.setText(display.getText() + "%");
+                }
                 break;
             case "=":
                 String finalValue = display.getText();
-                //display.setText(display.getText() + "=");
                 finalValue = callLibrary(finalValue);
                 System.out.println("FinalValue: " + finalValue);
                 resultDisplay.setText(finalValue);
 
                 break;
+            case "(":
+                if (isNumeric(resultDisplay.getText())) {
+                    display.setText("(" + resultDisplay.getText());
+                    resultDisplay.setText("");
+                } else {
+                    resultDisplay.setText("");
+                    display.setText(display.getText() + "(");
+                }
+
+                break;
+            case ")":
+                if (isNumeric(resultDisplay.getText())) {
+                    display.setText("(" + resultDisplay.getText() + ")");
+                    resultDisplay.setText("");
+                } else {
+                    resultDisplay.setText("");
+                    display.setText(display.getText() + ")");
+                }
+
+                break;
+            case "+":
+            case "-":
+            case "*":
+            case "/":
+            case "^":
+            case "x!":
+            case ".":
+                if (value.equals("x!")) {
+                    value = "!";
+                }
+                if (isNumeric(resultDisplay.getText())) {
+                    display.setText(resultDisplay.getText() + value);
+                    resultDisplay.setText("");
+                } else {
+                    resultDisplay.setText("");
+                    display.setText(display.getText() + value);
+                }
+
+                break;
             default:
+                resultDisplay.setText("");
                 display.setText(display.getText() + value);
                 break;
         }
+    }
+
+    public static boolean isNumeric(String strNum) {
+        if (strNum == null) {
+            return false;
+        }
+        try {
+            double d = Double.parseDouble(strNum);
+        } catch (NumberFormatException nfe) {
+            return false;
+        }
+        return true;
     }
 
     /**
