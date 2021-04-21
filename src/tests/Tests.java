@@ -197,7 +197,7 @@ public class Tests {
         @DisplayName("Power (2) of a natural number")
         void PowN() {
             assertEquals("4",
-                    CalcLib.main("pow(2, 2)"));
+                    CalcLib.main("pow(2; 2)"));
             assertEquals("4",
                     CalcLib.main("2^2"));
         }
@@ -206,7 +206,7 @@ public class Tests {
         @DisplayName("Power (2) of a real number")
         void PowR() {
             assertEquals("0.25",
-                    CalcLib.main("pow(0.5, 2)"));
+                    CalcLib.main("pow(0.5; 2)"));
             assertEquals("0.25",
                     CalcLib.main("0.5^2"));
         }
@@ -215,7 +215,7 @@ public class Tests {
         @DisplayName("Power (32) of a real number")
         void PowTo4R() {
             assertEquals("4294967296",
-                    CalcLib.main("pow(2, 32)"));
+                    CalcLib.main("pow(2; 32)"));
             assertEquals("4294967296",
                     CalcLib.main("2^32"));
         }
@@ -224,35 +224,35 @@ public class Tests {
         @DisplayName("Square root with a natural number")
         void sqrtN() {
             assertEquals("2",
-                    CalcLib.main("root(4, 2)"));
+                    CalcLib.main("root(4; 2)"));
         }
 
         @Test
         @DisplayName("Square root with a real number")
         void sqrtR() {
             assertEquals("1.73205081",
-                    CalcLib.main("root(3, 2)"));
+                    CalcLib.main("root(3; 2)"));
         }
 
         @Test
         @DisplayName("Cube root with a natural number")
         void cbrtN() {
             assertEquals("3",
-                    CalcLib.main("root(27, 3)"));
+                    CalcLib.main("root(27; 3)"));
         }
 
         @Test
         @DisplayName("Cube root with a real number")
         void cbrtR() {
             assertEquals("4.64158883",
-                    CalcLib.main("root(100, 3)"));
+                    CalcLib.main("root(100; 3)"));
         }
 
         @Test
         @DisplayName("Bigger root with a natural number")
         void root() {
             assertEquals("2",
-                    CalcLib.main("root(128, 7)"));
+                    CalcLib.main("root(128; 7)"));
         }
 
         @Test
@@ -309,11 +309,11 @@ public class Tests {
             @DisplayName("Weird spaces in a power")
             void SpaceInPow() {
                 assertEquals("4",
-                        CalcLib.main(" pow( 2 ,2 ) "));
+                        CalcLib.main(" pow( 2 ;2 ) "));
                 assertEquals("4",
                         CalcLib.main(" 2 ^ 2 "));
                 assertEquals("4",
-                        CalcLib.main("pow(2,2)"));
+                        CalcLib.main("pow(2;2)"));
                 assertEquals("4",
                         CalcLib.main("2^2"));
             }
@@ -322,9 +322,9 @@ public class Tests {
             @DisplayName("Weird spaces in a root")
             void SpaceInRoot() {
                 assertEquals("2",
-                        CalcLib.main(" root( 4 ,2 ) "));
+                        CalcLib.main(" root( 4 ;2 ) "));
                 assertEquals("2",
-                        CalcLib.main("root(4,2)"));
+                        CalcLib.main("root(4;2)"));
             }
 
             @Test
@@ -383,9 +383,9 @@ public class Tests {
             assertThrows(ArithmeticException.class,
                     () -> CalcLib.main("root()"));
             assertThrows(StringIndexOutOfBoundsException.class,
-                    () -> CalcLib.main("root(2, )"));
+                    () -> CalcLib.main("root(2; )"));
             assertThrows(ArithmeticException.class,
-                    () -> CalcLib.main("root(2 2)"));
+                    () -> CalcLib.main("root(2& 2)"));
             assertThrows(ArithmeticException.class,
                     () -> CalcLib.main("pow()"));
         }
@@ -460,13 +460,13 @@ public class Tests {
         @DisplayName("Illegal operation/operand")
         void IllegalOp() {
             assertThrows(ArithmeticException.class,
-                    () -> CalcLib.main("root(2, 0)"));
+                    () -> CalcLib.main("root(2; 0)"));
             assertThrows(ArithmeticException.class,
-                    () -> CalcLib.main("root(2, -1)"));
+                    () -> CalcLib.main("root(2; -1)"));
             assertThrows(ArithmeticException.class,
-                    () -> CalcLib.main("root(2, 1.2)"));
+                    () -> CalcLib.main("root(2; 1.2)"));
             assertThrows(ArithmeticException.class,
-                    () -> CalcLib.main("pow(2, 1.2)"));
+                    () -> CalcLib.main("pow(2; 1.2)"));
 
             assertThrows(ArithmeticException.class,
                     () -> CalcLib.main("1.1 mod 1.1"));
@@ -504,9 +504,9 @@ public class Tests {
         assertEquals("123",
                 CalcLib.main("123 + 1 mod 2 - 1"));
         assertEquals("150",
-                CalcLib.main("100 + 5 * root(100, 2)"));
+                CalcLib.main("100 + 5 * root(100; 2)"));
         assertEquals("300",
-                CalcLib.main("100 + 2 * pow(10, 2)"));
+                CalcLib.main("100 + 2 * pow(10; 2)"));
         assertEquals("112",
                 CalcLib.main("100 + 2 * 3!"));
     }
@@ -518,17 +518,17 @@ public class Tests {
     @DisplayName("More complex calculations")
     void ComplexCalculations() {
         assertEquals("366782.25063265",
-                CalcLib.main("1234 * root(10, 2) + 17mod2 * 9!"));
+                CalcLib.main("1234 * root(10; 2) + 17mod2 * 9!"));
         assertEquals("-3627200",
-                CalcLib.main("pow(4, 2) * root(10000, 2) - 10! * 120%17"));
+                CalcLib.main("pow(4; 2) * root(10000; 2) - 10! * 120%17"));
         assertEquals("-359",
                 CalcLib.main("100*100/250+100-50*10+1"));
         assertEquals("18101.93359838",
-                CalcLib.main("100%21*400/root(2,2)*pow(2,2)"));
+                CalcLib.main("100%21*400/root(2;2)*pow(2;2)"));
         assertEquals("0",
-                CalcLib.main("pow(2, 2) - 2*5 + 6"));
+                CalcLib.main("pow(2; 2) - 2*5 + 6"));
         assertEquals("-32749.25531915",
-                CalcLib.main("root(123456, 4) - pow(2, 15)"));
+                CalcLib.main("root(123456; 4) - pow(2; 15)"));
     }
 
     /**
@@ -542,15 +542,15 @@ public class Tests {
         @DisplayName("Calculations with parentheses")
         void Parentheses() {
             assertEquals("1863842629.5752265",
-                    CalcLib.main("1234 * (root(10, 2) + (17mod2)) * 9!"));
+                    CalcLib.main("1234 * (root(10; 2) + (17mod2)) * 9!"));
             assertEquals("-3627100",
-                    CalcLib.main("(pow(4, 2) + 1) * root(10000, 2) - (10! * (120%17))"));
+                    CalcLib.main("(pow(4; 2) + 1) * root(10000; 2) - (10! * (120%17))"));
             assertEquals("-571.42857143",
                     CalcLib.main("(100*100)/(250+100)-50*(10+(1*2))"));
             assertEquals("1131.3708499",
-                    CalcLib.main("(((100%21)*400)/(root(2,2)*((pow(2,2)))))"));
+                    CalcLib.main("(((100%21)*400)/(root(2;2)*((pow(2;2)))))"));
             assertEquals("-18",
-                    CalcLib.main("pow(2, 2) - (2*(5 + (6)))"));
+                    CalcLib.main("pow(2; 2) - (2*(5 + (6)))"));
         }
 
         @Disabled
@@ -558,13 +558,13 @@ public class Tests {
         @DisplayName("Basic operations within pow and sqrt")
         void OpWithinOp() {
             assertEquals("16",
-                    CalcLib.main("pow(2+2, 2)"));
+                    CalcLib.main("pow(2+2; 2)"));
             assertEquals("16",
-                    CalcLib.main("pow(2*2, 2)"));
+                    CalcLib.main("pow(2*2; 2)"));
             assertEquals("10",
-                    CalcLib.main("root(50+50, 2)"));
+                    CalcLib.main("root(50+50; 2)"));
             assertEquals("10",
-                    CalcLib.main("root(50*2, 2)"));
+                    CalcLib.main("root(50*2; 2)"));
         }
 
         @Test

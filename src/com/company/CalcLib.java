@@ -407,7 +407,7 @@ public class CalcLib {
         // Replace all "mod" with '%'
         input = input.replace("mod", "%");
 
-        // Convert "pow()" to '^', for example pow(5,2) => 5^2
+        // Convert "pow()" to '^', for example pow(5;2) => (5)^(2)
         String orig;
         String tmp;
         int indexFrom;
@@ -422,10 +422,10 @@ public class CalcLib {
             tmp = tmp.replace("pow(", "");
             tmp = tmp.replace(")", "");
 
-            if(tmp.indexOf(',') == -1) {
+            if(tmp.indexOf(';') == -1) {
                 throw new ArithmeticException("Malformed power expression.");
             }
-            tmp = tmp.replace(",", ")^(");
+            tmp = tmp.replace(";", ")^(");
             if(tmp.charAt(0) == '-'){
                 tmp = tmp.replace('-', '~');
             }
@@ -437,7 +437,7 @@ public class CalcLib {
         }
         
         // Converts "root" to '|'
-        // For example root(5,2) => (5)|(2) (represents sqrt(5))
+        // For example root(5;2) => (5)|(2) (represents sqrt(5))
         while(true){
             indexFrom = input.indexOf("root");
             if(indexFrom == -1){
@@ -448,10 +448,10 @@ public class CalcLib {
             tmp = orig;
             tmp = tmp.replace("root(", "");
             tmp = tmp.replace(")", "");
-            if(tmp.indexOf(',') == -1) {
+            if(tmp.indexOf(';') == -1) {
                 throw new ArithmeticException("Malformed root expression.");
             }
-            tmp = tmp.replace(",", ")|(");
+            tmp = tmp.replace(";", ")|(");
             if(tmp.charAt(0) == '-'){
                 tmp = tmp.replace('-', '~');
             }

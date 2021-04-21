@@ -212,7 +212,7 @@ public class Controller {
                 "Press Enter or the \"=\" button when you're done. " +
                 "The \"AC\" button clears the calculator. Press the \"DEL\" button or backspace to delete one character.\n\n" +
 
-                "You can write x^n or pow(x, n) to find the nth power of x, or root(x, n) to find the nth root of x. " +
+                "You can write x^n or pow(x; n) to find the nth power of x, or root(x; n) to find the nth root of x. " +
                 "Only a whole power or natural root can be calculated (for example NOT 4^0.5).\n\n" +
                 "The symbol \"%\" (button \"MOD\") is used for modulo (remainder), not to be confused with percentage." +
                 "Both decimal point and comma can be used on the input." +
@@ -220,7 +220,7 @@ public class Controller {
 
                 "ADVANCED OPTIONS\n" +
                 "You can use the symbol \"|\" for root, for example x|n is the nth root of x." +
-                "When writing pow() or root(), you can write for example pow(4+5, 3), but you can't use parentheses." +
+                "When writing pow() or root(), you can write for example pow(4+5; 3), but you can't use parentheses." +
                 "However, when using \"^\" or \"|\", you can use parentheses to calculate a more complex expression, for example 4|(4/(1+1)).\n" +
                 "\n\n" +
                 "See the full user guide for more information.";
