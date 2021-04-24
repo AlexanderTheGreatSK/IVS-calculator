@@ -75,10 +75,14 @@ pack: doc clean #To make sense of what is happening, read the echo messages...
 	echo "--Copy the best doxyfile to 'doxyfile' and remove all 'doxyfile_*'" && \
 	cp ./src/$(BESTDOXYFILE) ./src/doxyfile && \
 	rm ./src/doxyfile_* && \
-	echo "--Go back above the repo directory, zip everything needed and remove the repo dir" && \
+	echo "--Generate the latex doxygen documentation and copy it directly to doc/" && \
+	cd ../../doc/latex && \
+	make && \
+	cp refman.pdf ../reference_manual.pdf && \
+	echo "--Go back above the main three directories, zip everything needed and remove the repo dir" && \
 	cd ../../ && \
-	zip -r $(PROJNAME).zip $(PROJNAME) && \
 	:
+	#zip -r $(PROJNAME).zip $(PROJNAME) && \
 	#rm -rf $(PROJNAME)
 	
 
