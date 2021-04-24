@@ -33,14 +33,14 @@ DEBUG = #-g  #Uncomment to enable compiling with -g and vice versa
 
 default: all
 
-all: tests profile
+all: compiletests profile
 	#Compile main class with the library and controller
 	javac $(MAINCLASS) $(LIBCLASS) $(CONTROLLERCLASS) -cp $(MAINCP) -p $(JAVAFXPATH) --add-modules $(JAVAFXMODULES) -d $(BUILDDIR) $(DEBUG) 
 	cp com/company/calc.fxml ../build/com/company/
 	cp com/company/logo.png ../build/com/company/
 
-tests: all
-	#Compile tests along with the library
+compiletests: all
+	#Compile tests 
 	javac $(TESTCLASS) $(LIBCLASS) -cp $(TESTSCP) -d $(BUILDDIR)
 
 profile: all
@@ -59,7 +59,7 @@ test: all #Returns 1 if at least one test fails
 clean:
 	rm -rf $(CLEANLIST)
 	
-pack: clean #To make sense of what is happening, read the echo messages...
+pack: doc clean #To make sense of what is happening, read the echo messages...
 	cd ../../ && \
 	echo "Create a folder named after xlogins, copy data there and enter" && \
 	mkdir -p $(PROJNAME) && \
