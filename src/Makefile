@@ -29,6 +29,7 @@ PROFILECLASS = profiling/Profile.java
 
 DEBUG = #-g  #Uncomment to enable compiling with -g and vice versa
 
+BESTDOXYFILE = doxyfile_xskalo01
 
 
 default: all
@@ -61,17 +62,20 @@ clean:
 	
 pack: doc clean #To make sense of what is happening, read the echo messages...
 	cd ../../ && \
-	echo "Create a folder named after xlogins, copy data there and enter" && \
+	echo "--Create a folder named after xlogins, copy data there and enter" && \
 	mkdir -p $(PROJNAME) && \
 	cp -r doc install $(PROJNAME) && \
-	echo "Meanwhile, the repository is renamed to 'repo'" && \
+	echo "--Meanwhile, the repository is renamed to 'repo'" && \
 	cp -r ./IVS-calculator/ ./$(PROJNAME)/repo/ && \
 	cd ./$(PROJNAME)/repo/ && \
-	echo "In repo/profiling remove everything except the .pdf and .csv files" && \
+	echo "--In repo/profiling remove everything except the .pdf and .csv files" && \
 	rm -rf ./profiling/profile_command ./profiling/output/** ./profiling/report && \
 	mv ./profiling/data/csv/** ./profiling/output/ && \
 	rm -rf ./profiling/data && \
-	echo "Go back above the repo directory, zip everything needed and remove the repo dir" && \
+	echo "--Copy the best doxyfile to 'doxyfile' and remove all 'doxyfile_*'" && \
+	cp ./src/$(BESTDOXYFILE) ./src/doxyfile && \
+	rm ./src/doxyfile_* && \
+	echo "--Go back above the repo directory, zip everything needed and remove the repo dir" && \
 	cd ../../ && \
 	zip -r $(PROJNAME).zip $(PROJNAME) && \
 	:
