@@ -1,0 +1,4 @@
+xkovac59 100 (manažment, uživateľská dokumentácia, dizajn GUI, systémové testovanie, readme)
+xokruc00 100 (kód GUI, inštalátor, sledovanie práce kolegov)
+xskalo01 100 (kód knižnice - spolu s xfrybo01, makefile, jednotkové testy, profiling)
+xfrybo01 100 (kód knižnice - spolu s xskalo01, main kód, nápoveda)

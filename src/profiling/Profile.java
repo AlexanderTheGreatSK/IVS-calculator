@@ -80,11 +80,11 @@ public class Profile {
 
         //Calculate the sum of these distances^2
         String sumOfSquaredDistancesExpression = String.join
-                ("", "pow(", distances.get(0), ", 2)");
+                ("", "pow(", distances.get(0), "; 2)");
         for(int i = 1; i < nums.size(); i++){
             sumOfSquaredDistancesExpression = String.join
                     ("", sumOfSquaredDistancesExpression,
-                    "+", "pow(", distances.get(i), ", 2)");
+                    "+", "pow(", distances.get(i), "; 2)");
         }
         String sumOfSquaredDistances =
                 CalcLib.main(sumOfSquaredDistancesExpression);
@@ -101,7 +101,7 @@ public class Profile {
 
         //Take a square root and acquire the result
         String resultExpression = String.join(
-                "", "root(", divideByAmount, ", 2)");
+                "", "root(", divideByAmount, "; 2)");
         String result = CalcLib.main(resultExpression);
 
         //Print the result to stdout

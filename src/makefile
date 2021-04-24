@@ -39,11 +39,11 @@ all: compiletests profile
 	cp com/company/calc.fxml ../build/com/company/
 	cp com/company/logo.png ../build/com/company/
 
-compiletests: all
+compiletests:
 	#Compile tests 
 	javac $(TESTCLASS) $(LIBCLASS) -cp $(TESTSCP) -d $(BUILDDIR)
 
-profile: all
+profile:
 	#Compile the profiling app
 	javac $(PROFILECLASS) $(LIBCLASS) -d $(BUILDDIR)
 
