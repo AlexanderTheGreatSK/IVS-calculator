@@ -19,20 +19,49 @@ import javafx.stage.Stage;
 
 public class Controller {
 
+    /**
+     * @brief GUI Controller
+     *
+     * This class is backend for our frontend.
+     * GUI Controller includes how GUI will be build, handle user input, calculate
+     * result via our math library and result show on GUI. Buttons call only one
+     * method which will run specific code based on button's label. In our GUI
+     * are two TextFields, the bigger one is where user writes equations with
+     * keyboard or our calculator keyboard, with Enter u can solve the equation.
+     * The smaller TextField is just for result, user can't type there.
+     *
+     * @author xokruc00
+     * @version 1.0
+     */
+
     @FXML
     private TextField display;
 
     @FXML
     private TextField resultDisplay;
 
+    /**
+     * If main TextField is focused this function will catch
+     * pressed Enter on keyboard and get the mathematical
+     * expresion and pass to MathLibrary. Result value
+     * is set to resultTextField.
+     *
+     * @param actionEvent
+     */
     @FXML
-    public void onEnter(ActionEvent ae){
+    public void onEnter(ActionEvent actionEvent){
         String finalValue = display.getText();
         finalValue = callLibrary(finalValue);
-        System.out.println("FinalValue: " + finalValue);
+        System.out.println("Result: " + finalValue);
         resultDisplay.setText(finalValue);
     }
 
+    /**
+     * This method handles user input via calculator keyboard.
+     * Every button have specific tasks.
+     *
+     * @param event parse button properties which was pressed
+     */
     @FXML
     public void buttonPress(ActionEvent event) {
         String value = ((Button) event.getSource()).getText();
@@ -44,7 +73,7 @@ public class Controller {
                 break;
             case "√":
                 if (isNumeric(resultDisplay.getText())) {
-                    display.setText("root(" + resultDisplay.getText() + ",");
+                    display.setText("root(" + resultDisplay.getText() + ";");
                     resultDisplay.setText("");
                 } else {
                     resultDisplay.setText("");
@@ -53,11 +82,9 @@ public class Controller {
                 break;
             case "DEL":
                 if (display.getText().length() != 0) {
-
                     char[] nDisplay = new char[display.getText().length()];
 
                     display.getText().getChars(0, display.getText().length() - 1, nDisplay, 0);
-
                     display.setText(String.valueOf(nDisplay));
                 }
 
@@ -124,6 +151,13 @@ public class Controller {
         }
     }
 
+    /**
+     * This method checks if string is number.
+     *
+     * @param strNum String which will be checked
+     *
+     * @retrun boolean value, true if it is number, false if isn't
+     */
     public static boolean isNumeric(String strNum) {
         if (strNum == null) {
             return false;
@@ -153,58 +187,71 @@ public class Controller {
         return input;
     }
 
-        @FXML
-        public void aboutBtn (ActionEvent event) {
-            Stage stage = new Stage();
-            String authors = "Jiřina Frýbortová (xfrybo01)\n" + "Jana Kováčiková (xkovac59)\n" + "Patrik Skaloš (xskalo01)\n" + "Alexander Okrucký (xokruc00)";
-            String license = "This project is licensed under the GNU GPL v.2 License.";
-            String team = "My dve a my dvaja";
-            String name = "UNI(x)calc";
+    /**
+     * This method is called when user will press About button which is under
+     * menu button Help. New window is launched.
+     *
+     * @param event an expression to be calculated
+     */
+    @FXML
+    public void aboutBtn (ActionEvent event) {
+        Stage stage = new Stage();
+        String authors = "Jiřina Frýbortová (xfrybo01)\n" + "Jana Kováčiková (xkovac59)\n" + "Patrik Skaloš (xskalo01)\n" + "Alexander Okrucký (xokruc00)";
+        String license = "This project is licensed under the GNU GPL v.2 License.";
+        String team = "My dve a my dvaja";
+        String name = "UNI(x)calc";
 
-                Image image = new Image(Main.class.getResourceAsStream("logo.png"));
-                ImageView imageView = new ImageView(image);
-                imageView.setFitHeight(100);
-                imageView.setFitWidth(100);
+        Image image = new Image(Main.class.getResourceAsStream("logo.png"));
+        ImageView imageView = new ImageView(image);
+        imageView.setFitHeight(100);
+        imageView.setFitWidth(100);
 
-                Text nameText = new Text(name);
-                nameText.setTextAlignment(TextAlignment.CENTER);
-                nameText.setFont(Font.font("",FontWeight.BOLD, 25));
+        Text nameText = new Text(name);
+        nameText.setTextAlignment(TextAlignment.CENTER);
+        nameText.setFont(Font.font("",FontWeight.BOLD, 25));
 
-                Text teamText = new Text(team);
-                teamText.setTextAlignment(TextAlignment.CENTER);
+        Text teamText = new Text(team);
+        teamText.setTextAlignment(TextAlignment.CENTER);
 
-                Text authorsText = new Text(authors);
-                teamText.setWrappingWidth(100);
-                nameText.setFont(Font.font("",FontWeight.BOLD, 20));
+        Text authorsText = new Text(authors);
+        teamText.setWrappingWidth(100);
+        nameText.setFont(Font.font("",FontWeight.BOLD, 20));
 
-                Text licenseText = new Text(license);
-                teamText.setWrappingWidth(50);
+        Text licenseText = new Text(license);
+        teamText.setWrappingWidth(50);
 
-                VBox root = new VBox();
-                root.getChildren().addAll(imageView, nameText, teamText, authorsText, licenseText);
-                root.setSpacing(10);
-                root.setAlignment(Pos.CENTER);
+        VBox root = new VBox();
+        root.getChildren().addAll(imageView, nameText, teamText, authorsText, licenseText);
+        root.setSpacing(10);
+        root.setAlignment(Pos.CENTER);
 
-                root.setStyle("-fx-padding: 10;" +
+        root.setStyle("-fx-padding: 10;" +
                         "-fx-border-style: solid inside;" +
                         "-fx-border-width: 2;" +
                         "-fx-border-insets: 5;" +
                         "-fx-border-radius: 5;" +
                         "-fx-border-color: blue;");
 
-                Scene scene = new Scene(root, 400, 400);
-                stage.getIcons().add(new Image(Main.class.getResourceAsStream("logo.png")));
-                stage.setScene(scene);
-                stage.setTitle("About");
-                stage.setMinWidth(400);
-                stage.setMinHeight(400);
-                stage.setMaxWidth(400);
-                stage.setMaxHeight(400);
+        Scene scene = new Scene(root, 400, 400);
+        stage.getIcons().add(new Image(Main.class.getResourceAsStream("logo.png")));
+        stage.setScene(scene);
+        stage.setTitle("About");
+        stage.setMinWidth(400);
+        stage.setMinHeight(400);
+        stage.setMaxWidth(400);
+        stage.setMaxHeight(400);
 
-                stage.show();
+        stage.show();
 
-        }
+    }
 
+    /**
+     * This method is called when user will press User guide button which is under
+     * menu button Help. On this page is our user manual for our calculator.
+     * New window is launched.
+     *
+     * @param event an expression to be calculated
+     **/
     @FXML
     public void helpBtn (ActionEvent event){
         Stage stage = new Stage();

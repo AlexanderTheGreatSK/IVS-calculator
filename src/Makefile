@@ -49,7 +49,7 @@ profile:
 	javac $(PROFILECLASS) $(LIBCLASS) -d $(BUILDDIR)
 
 doc: 
-	doxygen doxyfile
+	doxygen $(BESTDOXYFILE)
 
 run: all
 	cd ../build/ && java --module-path ../lib/javaFX --add-modules javafx.controls,javafx.fxml com.company.Main
