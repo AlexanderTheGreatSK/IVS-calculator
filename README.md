@@ -1,6 +1,8 @@
 # IVS Project 2 - UNI(x)calc
 
-tu bude orázok našej kalkulačky :)
+<div align="center">
+    <img src="unixcalcscreenshot.png">
+</div>
 
 ## Enviroment
 Ubuntu 64bit
