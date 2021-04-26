@@ -1,7 +1,7 @@
 # IVS Project 2 - UNI(x)calc
 
 <div align="center">
-    <img src="unixcalcscreenshot.png">
+    <img src="preview.png">
 </div>
 
 ## Enviroment
