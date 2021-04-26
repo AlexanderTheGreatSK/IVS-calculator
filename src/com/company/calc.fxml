@@ -73,14 +73,9 @@
          <center>
             <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
                <children>
-                  <HBox prefHeight="100.0" prefWidth="200.0">
+                  <HBox prefHeight="100.0" prefWidth="200.0" alignment="CENTER">
                      <children>
-                        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
-                           <children>
-                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Result:" textAlignment="CENTER" wrappingWidth="57.0"/>
-                           </children>
-                        </VBox>
-                        <TextField fx:id="resultDisplay" prefHeight="25.0" prefWidth="271.0" editable="false"/>
+                        <TextField fx:id="resultDisplay" prefHeight="25.0" prefWidth="286.0" editable="false"/>
                      </children>
                   </HBox>
                   <TextField fx:id="display" prefHeight="159.0" prefWidth="286.0" onAction="#onEnter"/>
