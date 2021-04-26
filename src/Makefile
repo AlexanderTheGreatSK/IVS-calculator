@@ -29,7 +29,7 @@ PROFILECLASS = profiling/Profile.java
 
 DEBUG = #-g  #Uncomment to enable compiling with -g and vice versa
 
-BESTDOXYFILE = doxyfile_xskalo01
+BESTDOXYFILE = doxyfile_xkovac59
 
 
 default: all

@@ -12,9 +12,9 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("calc.fxml"));
         primaryStage.setTitle("UNI(x)calc");
-        primaryStage.setMaxHeight(445);
+        primaryStage.setMaxHeight(460);
         primaryStage.setMaxWidth(286);
-        primaryStage.setMinHeight(445);
+        primaryStage.setMinHeight(460 );
         primaryStage.setMinWidth(286);
 
         primaryStage.getIcons().add(new Image(Main.class.getResourceAsStream("logo.png")));
