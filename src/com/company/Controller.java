@@ -155,8 +155,7 @@ public class Controller {
      * This method checks if string is number.
      *
      * @param strNum String which will be checked
-     *
-     * @retrun boolean value, true if it is number, false if isn't
+     * @return boolean value, true if it is number, false if isn't
      */
     public static boolean isNumeric(String strNum) {
         if (strNum == null) {
