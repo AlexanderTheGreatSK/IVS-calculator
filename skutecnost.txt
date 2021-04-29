@@ -1,0 +1,9 @@
+ROZDIELY A PODOBNOSTI - PLÁN A SKUTOČNOSŤ
+
+Ohľadom managementu: aj napriek tomu, že väčšina tímu s Trellom nemala žiadne skúsenosti, práca s ním šla výborne. Spočiatku sme si mysleli, že si budeme písať poznámky z meetingov, no vďaka Trellu to nebolo potrebné. Občas sme meškali s našimi internými deadlinami ktoré nám niekedy komplikovali vývoj - hlavne keď práca niekoho iného nadväzovala na meškajúci deadline. Komunikácia prebiehala podľa plánu - bola častá, rýchla a meetingy sme mali pravidelne, ako sme si to stanovili na začiatku vývoja.
+
+Git: Zo začiatku sme všetky časti projektu dávali do patričných vetiev, no keď sa projekt chýlil ku koncu, kvôli syndrómu 'poslednej opravy' sme už vetvy nepoužívali a všetko šlo do 'main' vetvy, čo zneprehľadnilo históriu.
+
+Program: Jedna z vecí ktoré nakoniec neboli podľa plánu je návrh GUI designu, ktorý nebol čas upraviť podľa predstáv - na funkčnosti kalkulačky to však samozrejme nič nemení. Spočiatku sme nemysleli, že budeme podporovať operácie so zátvorkami, bolo to však implementované, keďže kalkulačka bez podpory zátvoriek nie je hodná používania. Na druhú stranu sme chceli implementovať pamäť kalkulačky (zobrazenie niekoľkých posledných výpočtov). Na to však už čas nevyšiel.
+
+Rozdelenie úloh sme dodržali veľmi dobre - aj keď sme si, prirodzene, navzájom pomáhali, každý vypracoval sebe pridelenú časť.
