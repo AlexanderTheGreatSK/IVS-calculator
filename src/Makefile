@@ -62,28 +62,37 @@ clean:
 	
 pack: doc clean #To make sense of what is happening, read the echo messages...
 	cd ../../ && \
+	echo "--If a folder named after xlogins exists, delete it first" && \
+	rm -rf $(PROJNAME) && \
 	echo "--Create a folder named after xlogins, copy data there and enter" && \
 	mkdir -p $(PROJNAME) && \
-	cp -r doc install $(PROJNAME) && \
-	echo "--Meanwhile, the repository is renamed to 'repo'" && \
+	mv doc $(PROJNAME) && \
+	echo "--Next, the repository is renamed to 'repo'" && \
 	cp -r ./IVS-calculator/ ./$(PROJNAME)/repo/ && \
+	echo "--Move the installators from the ./repo/install to ./install" && \
 	cd ./$(PROJNAME)/repo/ && \
+	mv ./install ../install && \
 	echo "--In repo/profiling remove everything except the .pdf and .csv files" && \
 	rm -rf ./profiling/profile_command ./profiling/output/** ./profiling/report && \
 	mv ./profiling/data/csv/** ./profiling/output/ && \
 	rm -rf ./profiling/data && \
+	mv ./profiling/output.pdf ./profiling/vystup.pdf && \
+	mv ./profiling/report.pdf ./profiling/zprava.pdf && \
 	echo "--Copy the best doxyfile to 'doxyfile' and remove all 'doxyfile_*'" && \
-	cp ./src/$(BESTDOXYFILE) ./src/doxyfile && \
-	rm ./src/doxyfile_* && \
+	cp ./src/$(BESTDOXYFILE) ./src/Doxyfile && \
+	rm ./src/doxyfile* && \
 	echo "--Generate the latex doxygen documentation and copy it directly to doc/" && \
-	cd ../../doc/latex && \
+	cd ../doc/latex && \
 	make && \
 	cp refman.pdf ../reference_manual.pdf && \
-	echo "--Go back above the main three directories, zip everything needed and remove the repo dir" && \
+	echo "--Go back above the main three directories" && \
 	cd ../../ && \
-	:
-	#zip -r $(PROJNAME).zip $(PROJNAME) && \
-	#rm -rf $(PROJNAME)
+	echo "--Now we can remove the logos from src/" && \
+	rm ./repo/src/logo* && \
+	echo "--Zip everything needed and remove the repo dir" && \
+	cd ../ && \
+	zip -r $(PROJNAME).zip $(PROJNAME) && \
+	rm -rf $(PROJNAME)
 	
 
 
